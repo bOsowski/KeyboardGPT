@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/keyboard_view"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="@drawable/ic_launcher_background"
+    >
+
+
+    <Button style="@style/NormalKeyStyles" android:id="@+id/shift" android:tag="SHIFT" android:text="SHFT" />
+    <Button style="@style/NormalKeyStyles" android:id="@+id/keyboard_button_g" android:tag="G" android:text="g" />
+    <Button style="@style/NormalKeyStyles" android:id="@+id/keyboard_button_3" android:tag="3" android:text="3" />
+    <Button style="@style/NormalKeyStyles" android:id="@+id/keyboard_button_apostrophe" android:tag="APOSTROPHE" android:text="\'" />
+    <Button style="@style/NormalKeyStyles" android:id="@+id/keyboard_button_del" android:tag="DEL" android:text="&lt;\-" />
+    <Button style="@style/NormalKeyStyles" android:id="@+id/keyboard_button_enter" android:tag="ENTER" android:text="&lt;\-\|" />
+</LinearLayout>
