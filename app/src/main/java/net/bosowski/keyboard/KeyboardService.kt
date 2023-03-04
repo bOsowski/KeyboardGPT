@@ -12,8 +12,8 @@ class KeyboardService: View.OnClickListener, InputMethodService() {
     @Override
     override fun onCreateInputView(): View {
         val myKeyboardView: View = layoutInflater.inflate(R.layout.keyboard_view, null)
-        val btnA: Button = myKeyboardView.findViewById(R.id.keyboard_button_g)
-        btnA.setOnClickListener(this)
+//        val btnA: Button = myKeyboardView.findViewById(R.id.keyboard_button_g)
+//        btnA.setOnClickListener(this)
         //ADD ALL THE OTHER LISTENERS HERE FOR ALL THE KEYS
         return myKeyboardView
     }
