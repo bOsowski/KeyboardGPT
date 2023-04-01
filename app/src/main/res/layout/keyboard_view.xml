@@ -23,6 +23,7 @@
         android:gravity="center"
         >
         <LinearLayout
+            android:id="@+id/first_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -149,6 +150,7 @@
                 android:onClick="onClickButton"/>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/second_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -197,17 +199,18 @@
                 app:autoSizeTextType="uniform"
                 android:textAllCaps="false"
                 android:onClick="onClickButton"/>
+
             <Button
                 android:id="@+id/F"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="F"
+                android:onClick="onClickButton"
                 android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
+                android:text="F"
                 android:textAllCaps="false"
-                android:onClick="onClickButton"/>
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
             <Button
                 android:id="@+id/G"
                 android:layout_width="0dp"
@@ -273,6 +276,7 @@
                 />
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/third_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
