@@ -1,7 +1,6 @@
 package net.bosowski.keyboard
 
 import android.inputmethodservice.InputMethodService
-import android.view.KeyCharacterMap
 import android.view.KeyEvent
 import android.view.View
 import net.bosowski.R
@@ -21,7 +20,7 @@ class KeyboardService: View.OnClickListener, InputMethodService() {
         for(row in buttonRows){
             for(button in (row as LinearLayout).children){
                 button.setOnClickListener{
-                    sendDownUpKeyEvents(KeyEvent.keyCodeFromString((button as Button).text.toString()))
+                    sendDownUpKeyEvents(KeyEvent.keyCodeFromString((button as Button).text.toString().uppercase()))
                 }
             }
         }
