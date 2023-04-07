@@ -32,10 +32,11 @@
             >
             <Button
                 android:id="@+id/Q"
+                android:tag="Q"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Q"
+                android:text="q"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -44,10 +45,11 @@
                 />
             <Button
                 android:id="@+id/W"
+                android:tag="W"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="W"
+                android:text="w"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -56,10 +58,11 @@
                 />
             <Button
                 android:id="@+id/E"
+                android:tag="E"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="E"
+                android:text="e"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -68,10 +71,11 @@
                 />
             <Button
                 android:id="@+id/r"
+                android:tag="r"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="R"
+                android:text="r"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -80,10 +84,11 @@
                 />
             <Button
                 android:id="@+id/T"
+                android:tag="T"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="T"
+                android:text="t"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -92,10 +97,11 @@
                 />
             <Button
                 android:id="@+id/Y"
+                android:tag="Y"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Y"
+                android:text="y"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -104,10 +110,11 @@
                 />
             <Button
                 android:id="@+id/U"
+                android:tag="U"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="U"
+                android:text="u"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -116,10 +123,11 @@
                 />
             <Button
                 android:id="@+id/I"
+                android:tag="I"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="I"
+                android:text="i"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -128,10 +136,11 @@
                 />
             <Button
                 android:id="@+id/O"
+                android:tag="O"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="O"
+                android:text="o"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -139,10 +148,11 @@
                 android:onClick="onClickButton"/>
             <Button
                 android:id="@+id/P"
+                android:tag="P"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="P"
+                android:text="p"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -166,10 +176,11 @@
                 />
             <Button
                 android:id="@+id/A"
+                android:tag="A"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="A"
+                android:text="a"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -178,10 +189,11 @@
                 />
             <Button
                 android:id="@+id/S"
+                android:tag="S"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="S"
+                android:text="s"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -190,10 +202,11 @@
                 />
             <Button
                 android:id="@+id/D"
+                android:tag="D"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="D"
+                android:text="d"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -202,21 +215,23 @@
 
             <Button
                 android:id="@+id/F"
+                android:tag="F"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClickButton"
                 android:padding="-2dp"
-                android:text="F"
+                android:text="f"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
             <Button
                 android:id="@+id/G"
+                android:tag="G"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="G"
+                android:text="g"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -224,10 +239,11 @@
                 android:onClick="onClickButton"/>
             <Button
                 android:id="@+id/H"
+                android:tag="H"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="H"
+                android:text="h"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -235,10 +251,11 @@
                 android:onClick="onClickButton"/>
             <Button
                 android:id="@+id/J"
+                android:tag="J"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="J"
+                android:text="j"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -246,10 +263,11 @@
                 android:onClick="onClickButton"/>
             <Button
                 android:id="@+id/K"
+                android:tag="K"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="K"
+                android:text="k"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -257,10 +275,11 @@
                 android:onClick="onClickButton"/>
             <Button
                 android:id="@+id/L"
+                android:tag="L"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="L"
+                android:text="l"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -284,11 +303,12 @@
             android:gravity="center"
             >
             <Button
-                android:id="@+id/CAPS"
+                android:id="@+id/CAPS_LOCK"
+                android:tag="CAPS_LOCK"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1.5"
-                android:text="CAP"
+                android:text="CAPS"
                 android:maxLines="1"
                 android:padding="10dp"
                 android:textStyle="bold"
@@ -297,10 +317,11 @@
                 />
             <Button
                 android:id="@+id/Z"
+                android:tag="Z"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Z"
+                android:text="z"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -308,10 +329,11 @@
                 android:onClick="onClickButton"/>
             <Button
                 android:id="@+id/X"
+                android:tag="X"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="X"
+                android:text="x"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -319,10 +341,11 @@
                 android:onClick="onClickButton"/>
             <Button
                 android:id="@+id/C"
+                android:tag="C"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="C"
+                android:text="c"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -330,10 +353,11 @@
                 android:onClick="onClickButton"/>
             <Button
                 android:id="@+id/V"
+                android:tag="V"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="V"
+                android:text="v"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -341,10 +365,11 @@
                 android:onClick="onClickButton"/>
             <Button
                 android:id="@+id/B"
+                android:tag="B"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="B"
+                android:text="b"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -353,10 +378,11 @@
                 />
             <Button
                 android:id="@+id/N"
+                android:tag="N"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="N"
+                android:text="n"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -364,10 +390,11 @@
                 android:onClick="onClickButton"/>
             <Button
                 android:id="@+id/M"
+                android:tag="M"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="M"
+                android:text="m"
                 android:padding="-2dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -375,6 +402,7 @@
                 android:onClick="onClickButton"/>
             <Button
                 android:id="@+id/DEL"
+                android:tag="DEL"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1.5"
@@ -395,6 +423,7 @@
             >
             <Button
                 android:id="@+id/SPACE"
+                android:tag="SPACE"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
