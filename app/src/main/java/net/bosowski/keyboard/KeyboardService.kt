@@ -6,52 +6,64 @@ import android.view.View
 import net.bosowski.R
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.view.children
+import java.lang.reflect.Field
 
 
 class KeyboardService : View.OnClickListener, InputMethodService() {
 
     private var capsOn = false
+    private lateinit var mainView: View
 
     @Override
     override fun onCreateInputView(): View {
-        val myKeyboardView: View = layoutInflater.inflate(R.layout.keyboard_view, null)
-        val parentLayout = myKeyboardView.findViewById<LinearLayout>(R.id.keyboard)
-        val buttonRows = parentLayout.children
-        for (row in buttonRows) {
-            for (button in (row as LinearLayout).children) {
-                button.setOnClickListener {
-                    button as Button
-                    if (button.tag.toString() == "CAPS_LOCK") {
-                        capsOn = !capsOn
-                        toggleCaps(buttonRows)
-                    }
-                    else if(button.tag.toString() in arrayOf("SPACE", "DEL")){
-                        sendDownUpKeyEvents(KeyEvent.keyCodeFromString(button.tag.toString()))
-                    }
-                    else{
-                        currentInputConnection.commitText(button.text, 1)
-                    }
-                }
-            }
-        }
-        return myKeyboardView
+        mainView = layoutInflater.inflate(R.layout.keyboard_view, null)
+        return mainView
     }
 
-    private fun toggleCaps(rows: Sequence<View>) {
-        for (row in rows) {
+    /**
+     * Called by the caps button.
+     */
+    fun toggleCaps(v: View?) {
+        capsOn = !capsOn
+        for (row in mainView.findViewById<LinearLayout>(R.id.keyboard).children) {
             for (button in (row as LinearLayout).children) {
-                if(capsOn){
-                    (button as Button).text = button.text.toString().uppercase()
-                }
-                else{
-                    (button as Button).text = button.text.toString().lowercase()
+                if(button is Button && button.text.length == 1){
+                    if (capsOn) {
+                        button.text = button.text.toString().uppercase()
+                    } else {
+                        button.text = button.text.toString().lowercase()
+                    }
                 }
             }
         }
+    }
+
+    /**
+     * Called by special keys that can have their tag translated to keyCode, eg. "DEL" or "CAPS_LOCK".
+     */
+    fun sendTagAsEvent(v: View?){
+        sendDownUpKeyEvents(KeyEvent.keyCodeFromString(v?.tag.toString()))
     }
 
     override fun onClick(v: View?) {
         TODO("Not yet implemented")
+    }
+
+    /**
+     * Used by dynamic textView elements.
+     * eg. button from a-z. The text of those might change based on the capsOn state etc.
+     */
+    fun onClickButton(v: View?) {
+        v as TextView
+        currentInputConnection.commitText(v.text, 1)
+    }
+
+    fun onClickSuggestion(v: View?){
+        v as TextView
+        if(v.text.isNotEmpty()){
+            currentInputConnection.commitText(v.text, 1)
+        }
     }
 }
