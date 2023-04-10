@@ -25,7 +25,7 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
     /**
      * Called by the caps button.
      */
-    fun toggleCaps(v: View?) {
+    fun toggleCaps(v: View) {
         capsOn = !capsOn
         for (row in mainView.findViewById<LinearLayout>(R.id.keyboard).children) {
             for (button in (row as LinearLayout).children) {
@@ -43,11 +43,11 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
     /**
      * Called by special keys that can have their tag translated to keyCode, eg. "DEL" or "CAPS_LOCK".
      */
-    fun sendTagAsEvent(v: View?){
+    fun sendTagAsEvent(v: View){
         sendDownUpKeyEvents(KeyEvent.keyCodeFromString(v?.tag.toString()))
     }
 
-    override fun onClick(v: View?) {
+    override fun onClick(v: View) {
         TODO("Not yet implemented")
     }
 
@@ -55,15 +55,16 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
      * Used by dynamic textView elements.
      * eg. button from a-z. The text of those might change based on the capsOn state etc.
      */
-    fun onClickButton(v: View?) {
+    fun onClickButton(v: View) {
         v as TextView
         currentInputConnection.commitText(v.text, 1)
     }
 
-    fun onClickSuggestion(v: View?){
+    fun onClickSuggestion(v: View){
         v as TextView
         if(v.text.isNotEmpty()){
             currentInputConnection.commitText(v.text, 1)
         }
     }
+
 }
