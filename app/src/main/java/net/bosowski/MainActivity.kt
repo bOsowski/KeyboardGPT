@@ -24,7 +24,10 @@ class MainActivity : AppCompatActivity() {
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         val gso =
-            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
+            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(BuildConfig.CLIENT_ID)
+                .requestEmail()
+                .build()
 
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
@@ -41,7 +44,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateUI(account: GoogleSignInAccount?) {
         if(account != null){
-//            TODO("Open an activity for the logged in user.")
             val myIntent = Intent(this, UserOverview::class.java)
 //            myIntent.putExtra("key", value) //Optional parameters
             startActivity(myIntent)
