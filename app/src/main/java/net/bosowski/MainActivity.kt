@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
     private fun updateUI(account: GoogleSignInAccount?) {
         if(account != null){
             val myIntent = Intent(this, UserOverview::class.java)
+            getSharedPreferences("net.bosowski.shared", MODE_PRIVATE).edit().putString("idToken", account.idToken).apply()
 //            myIntent.putExtra("key", value) //Optional parameters
             startActivity(myIntent)
         }
