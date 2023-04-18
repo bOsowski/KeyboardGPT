@@ -4,12 +4,14 @@ import android.content.Context
 import android.inputmethodservice.InputMethodService
 import android.view.KeyEvent
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.ExtractedTextRequest
 import net.bosowski.R
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.children
+import com.google.gson.JsonParser
 import io.ktor.client.HttpClient
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.post
@@ -24,7 +26,7 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
 
     private var capsOn = false
     private lateinit var mainView: View
-    private lateinit var suggestions: TextView
+    private lateinit var suggestions: Sequence<View>
 
     private var idToken: String? = null
 
@@ -33,10 +35,9 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
     override fun onCreateInputView(): View {
         mainView = layoutInflater.inflate(R.layout.keyboard_view, null)
         idToken = getSharedPreferences("net.bosowski.shared", Context.MODE_PRIVATE).getString(
-            "idToken",
-            null
+            "idToken", null
         )
-        suggestions = mainView.findViewById(R.id.suggestions)
+        suggestions = mainView.findViewById<LinearLayout>(R.id.suggestions_layout).children
         return mainView
     }
 
@@ -76,11 +77,6 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
     fun onClickButton(v: View) {
         v as TextView
         currentInputConnection.commitText(v.text, 1)
-        GlobalScope.launch {
-            withContext(Dispatchers.Main) {
-                updateSuggestion()
-            }
-        }
     }
 
     private suspend fun updateSuggestion() {
@@ -90,8 +86,21 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
             bearerAuth(idToken ?: "")
             setBody(allText)
         }
-        val suggestion = "$allText${response.bodyAsText()}"
-        suggestions.text = suggestion
+        val choiceJsonArray =
+            JsonParser.parseString(response.bodyAsText()).asJsonObject.get("choices").asJsonArray
+
+        val choices = choiceJsonArray.map { it.asJsonObject.get("text").asString }.toSet()
+
+        suggestions.forEachIndexed { index, view ->
+            view as TextView
+            if (choices.size <= index) {
+                view.text = ""
+            } else {
+                view.text =
+                    choices.elementAt(index).replace("\n\n\"", "").reversed().replace("\"", "")
+                        .reversed()
+            }
+        }
     }
 
     fun onClickSuggestion(v: View) {
