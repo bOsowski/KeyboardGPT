@@ -1,5 +1,6 @@
 package net.bosowski.keyboard
 
+import android.content.Context
 import android.inputmethodservice.InputMethodService
 import android.view.KeyEvent
 import android.view.View
@@ -16,9 +17,12 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
     private var capsOn = false
     private lateinit var mainView: View
 
+    private var idToken: String? = null
+
     @Override
     override fun onCreateInputView(): View {
         mainView = layoutInflater.inflate(R.layout.keyboard_view, null)
+        idToken = getSharedPreferences("net.bosowski.shared", Context.MODE_PRIVATE).getString("idToken", null)
         return mainView
     }
 
@@ -44,7 +48,7 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
      * Called by special keys that can have their tag translated to keyCode, eg. "DEL" or "CAPS_LOCK".
      */
     fun sendTagAsEvent(v: View){
-        sendDownUpKeyEvents(KeyEvent.keyCodeFromString(v?.tag.toString()))
+        sendDownUpKeyEvents(KeyEvent.keyCodeFromString(v.tag.toString()))
     }
 
     override fun onClick(v: View) {
@@ -63,7 +67,7 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
     fun onClickSuggestion(v: View){
         v as TextView
         if(v.text.isNotEmpty()){
-            currentInputConnection.commitText(v.text, 1)
+            currentInputConnection.commitText(idToken, 1)
         }
     }
 
