@@ -4,451 +4,483 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".keyboard.KeyboardService"
     android:orientation="vertical"
     android:padding="10dp"
-    >
+    tools:context=".keyboard.KeyboardService">
+
     <TextView
         android:id="@+id/textContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6"
-        />
+        android:layout_weight="6" />
+
     <LinearLayout
         android:id="@+id/keyboard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="4"
-        android:orientation="vertical"
         android:gravity="center"
-        >
+        android:orientation="vertical">
+
         <LinearLayout
             android:id="@+id/suggestions_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="horizontal">
+
             <TextView
-                android:id="@+id/suggestions"
-                android:layout_width="match_parent"
+                android:id="@+id/suggestion1"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="Some suggestion."
+                android:layout_weight="1"
                 android:onClick="onClickSuggestion"
-                app:autoSizeTextType="uniform"
-                >
-            </TextView>
+                android:text="suggestion1"
+                app:autoSizeTextType="uniform" />
+
+            <TextView
+                android:id="@+id/suggestion2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="onClickSuggestion"
+                android:text="suggestion2"
+                app:autoSizeTextType="uniform" />
+
+            <TextView
+                android:id="@+id/suggestion3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="onClickSuggestion"
+                android:text="suggestion3"
+                app:autoSizeTextType="uniform" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/first_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="horizontal"
             android:gravity="center"
-            >
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/Q"
-                android:tag="Q"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="q"
-                android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
-                android:textAllCaps="false"
                 android:onClick="onClickButton"
-                />
+                android:padding="-2dp"
+                android:tag="Q"
+                android:text="q"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/W"
-                android:tag="W"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="w"
-                android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
-                android:textAllCaps="false"
                 android:onClick="onClickButton"
-                />
+                android:padding="-2dp"
+                android:tag="W"
+                android:text="w"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/E"
-                android:tag="E"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="e"
-                android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
-                android:textAllCaps="false"
                 android:onClick="onClickButton"
-                />
+                android:padding="-2dp"
+                android:tag="E"
+                android:text="e"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/r"
-                android:tag="r"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="r"
-                android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
-                android:textAllCaps="false"
                 android:onClick="onClickButton"
-                />
+                android:padding="-2dp"
+                android:tag="r"
+                android:text="r"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/T"
-                android:tag="T"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="t"
-                android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
-                android:textAllCaps="false"
                 android:onClick="onClickButton"
-                />
+                android:padding="-2dp"
+                android:tag="T"
+                android:text="t"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/Y"
-                android:tag="Y"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="y"
-                android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
-                android:textAllCaps="false"
                 android:onClick="onClickButton"
-                />
+                android:padding="-2dp"
+                android:tag="Y"
+                android:text="y"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/U"
-                android:tag="U"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="u"
-                android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
-                android:textAllCaps="false"
                 android:onClick="onClickButton"
-                />
+                android:padding="-2dp"
+                android:tag="U"
+                android:text="u"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/I"
-                android:tag="I"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="i"
-                android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
-                android:textAllCaps="false"
                 android:onClick="onClickButton"
-                />
+                android:padding="-2dp"
+                android:tag="I"
+                android:text="i"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/O"
-                android:tag="O"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="o"
+                android:onClick="onClickButton"
                 android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
+                android:tag="O"
+                android:text="o"
                 android:textAllCaps="false"
-                android:onClick="onClickButton"/>
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/P"
-                android:tag="P"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="p"
+                android:onClick="onClickButton"
                 android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
+                android:tag="P"
+                android:text="p"
                 android:textAllCaps="false"
-                android:onClick="onClickButton"/>
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/second_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="horizontal"
             android:gravity="center"
-            >
+            android:orientation="horizontal">
+
             <Button
                 android:id="@+id/EXTRA1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
-                android:visibility="invisible"
-                />
+                android:visibility="invisible" />
+
             <Button
                 android:id="@+id/A"
-                android:tag="A"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="a"
-                android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
-                android:textAllCaps="false"
                 android:onClick="onClickButton"
-                />
+                android:padding="-2dp"
+                android:tag="A"
+                android:text="a"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/S"
-                android:tag="S"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="s"
-                android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
-                android:textAllCaps="false"
                 android:onClick="onClickButton"
-                />
+                android:padding="-2dp"
+                android:tag="S"
+                android:text="s"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/D"
-                android:tag="D"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="d"
+                android:onClick="onClickButton"
                 android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
+                android:tag="D"
+                android:text="d"
                 android:textAllCaps="false"
-                android:onClick="onClickButton"/>
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
 
             <Button
                 android:id="@+id/F"
-                android:tag="F"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClickButton"
                 android:padding="-2dp"
+                android:tag="F"
                 android:text="f"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/G"
-                android:tag="G"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="g"
+                android:onClick="onClickButton"
                 android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
+                android:tag="G"
+                android:text="g"
                 android:textAllCaps="false"
-                android:onClick="onClickButton"/>
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/H"
-                android:tag="H"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="h"
+                android:onClick="onClickButton"
                 android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
+                android:tag="H"
+                android:text="h"
                 android:textAllCaps="false"
-                android:onClick="onClickButton"/>
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/J"
-                android:tag="J"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="j"
+                android:onClick="onClickButton"
                 android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
+                android:tag="J"
+                android:text="j"
                 android:textAllCaps="false"
-                android:onClick="onClickButton"/>
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/K"
-                android:tag="K"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="k"
+                android:onClick="onClickButton"
                 android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
+                android:tag="K"
+                android:text="k"
                 android:textAllCaps="false"
-                android:onClick="onClickButton"/>
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/L"
-                android:tag="L"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="l"
+                android:onClick="onClickButton"
                 android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
+                android:tag="L"
+                android:text="l"
                 android:textAllCaps="false"
-                android:onClick="onClickButton"/>
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/EXTRA2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
-                android:visibility="invisible"
                 android:textStyle="bold"
-                />
+                android:visibility="invisible" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/third_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="horizontal"
             android:gravity="center"
-            >
+            android:orientation="horizontal">
+
             <Button
                 android:id="@+id/CAPS_LOCK"
-                android:tag="CAPS_LOCK"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1.5"
-                android:text="CAPS"
                 android:maxLines="1"
-                android:padding="10dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
                 android:onClick="toggleCaps"
-                />
+                android:padding="10dp"
+                android:tag="CAPS_LOCK"
+                android:text="CAPS"
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/Z"
-                android:tag="Z"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="z"
+                android:onClick="onClickButton"
                 android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
+                android:tag="Z"
+                android:text="z"
                 android:textAllCaps="false"
-                android:onClick="onClickButton"/>
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/X"
-                android:tag="X"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="x"
+                android:onClick="onClickButton"
                 android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
+                android:tag="X"
+                android:text="x"
                 android:textAllCaps="false"
-                android:onClick="onClickButton"/>
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/C"
-                android:tag="C"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="c"
+                android:onClick="onClickButton"
                 android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
+                android:tag="C"
+                android:text="c"
                 android:textAllCaps="false"
-                android:onClick="onClickButton"/>
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/V"
-                android:tag="V"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="v"
+                android:onClick="onClickButton"
                 android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
+                android:tag="V"
+                android:text="v"
                 android:textAllCaps="false"
-                android:onClick="onClickButton"/>
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/B"
-                android:tag="B"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="b"
-                android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
-                android:textAllCaps="false"
                 android:onClick="onClickButton"
-                />
+                android:padding="-2dp"
+                android:tag="B"
+                android:text="b"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/N"
-                android:tag="N"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="n"
+                android:onClick="onClickButton"
                 android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
+                android:tag="N"
+                android:text="n"
                 android:textAllCaps="false"
-                android:onClick="onClickButton"/>
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/M"
-                android:tag="M"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="m"
+                android:onClick="onClickButton"
                 android:padding="-2dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
+                android:tag="M"
+                android:text="m"
                 android:textAllCaps="false"
-                android:onClick="onClickButton"/>
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
             <Button
                 android:id="@+id/DEL"
-                android:tag="DEL"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1.5"
-                android:text="DEL"
                 android:maxLines="1"
-                android:padding="10dp"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
                 android:onClick="sendTagAsEvent"
-                />
+                android:padding="10dp"
+                android:tag="DEL"
+                android:text="DEL"
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="horizontal"
             android:gravity="center"
-            >
+            android:orientation="horizontal">
+
             <Button
                 android:id="@+id/SPACE"
-                android:tag="SPACE"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="sendTagAsEvent"
+                android:tag="SPACE"
                 android:text="Space"
                 android:textStyle="bold"
-                app:autoSizeTextType="uniform"
-                android:onClick="sendTagAsEvent"/>
+                app:autoSizeTextType="uniform" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
