@@ -6,17 +6,27 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mGoogleSignInClient: GoogleSignInClient
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var user: FirebaseUser
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -31,6 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        auth = Firebase.auth
     }
 
     override fun onStart() {
@@ -44,15 +55,26 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateUI(account: GoogleSignInAccount?) {
         if(account != null){
-            val myIntent = Intent(this, UserOverview::class.java)
-            getSharedPreferences("net.bosowski.shared", MODE_PRIVATE).edit().putString("idToken", account.idToken).apply()
-//            myIntent.putExtra("key", value) //Optional parameters
-            startActivity(myIntent)
+            // Got an ID token from Google. Use it to authenticate
+            // with Firebase.
+            val firebaseCredential = GoogleAuthProvider.getCredential(account.idToken, null)
+            auth.signInWithCredential(firebaseCredential)
+                .addOnCompleteListener(this){task ->
+                    if(task.isSuccessful){
+                        user = auth.currentUser!!
+                        val myIntent = Intent(this, UserOverview::class.java)
+                        // Using shared preferences as the idToken is needed in the KayboardService view, that can start without on its own
+                        getSharedPreferences("net.bosowski.shared", MODE_PRIVATE).edit().putString("idToken", account.idToken).apply()
+                        getSharedPreferences("net.bosowski.shared", MODE_PRIVATE).edit().putString("email", account.email).apply()
+                        getSharedPreferences("net.bosowski.shared", MODE_PRIVATE).edit().putString("userId", account.id).apply()
+                        startActivity(myIntent)
+                    }
+                }
         }
-//        TODO("The user is not signed in.")
+//      do nothing..
     }
 
-    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             // There are no request codes
 

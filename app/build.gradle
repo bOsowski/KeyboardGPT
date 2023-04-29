@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-parcelize'
+    id 'com.google.gms.google-services'
 }
 
 ext {
@@ -26,9 +28,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField("String", "CLIENT_ID", "\"" + getClientId() + "\"")
+            buildConfigField("String", "SERVER_URL", "\"" + getServerUrl() + "\"")
         }
         debug {
             buildConfigField("String", "CLIENT_ID", "\"" + getClientId() + "\"")
+            buildConfigField("String", "SERVER_URL", "\"" + getServerUrl() + "\"")
         }
     }
     compileOptions {
@@ -58,15 +62,28 @@ dependencies {
     implementation("io.ktor:ktor-client-cio:$ktor_version")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation 'com.google.firebase:firebase-auth:21.1.0'
+    implementation 'com.google.firebase:firebase-database-ktx:20.1.0'
     runtimeOnly 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
     implementation 'com.google.code.gson:gson:2.10.1'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    implementation 'com.jakewharton.timber:timber:5.0.1'
+
+    implementation platform('com.google.firebase:firebase-bom:31.5.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-auth-ktx'
 }
 
 static def getClientId() {
     def clientId = System.getenv("GOOGLE_CLIENT_ID")
     return clientId
+}
+
+static def getServerUrl(){
+    def serverUrl = System.getenv("CHATTERGPT_SERVER_URL")
+    return serverUrl
 }
