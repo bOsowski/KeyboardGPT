@@ -4,8 +4,19 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import com.google.gson.JsonParser
+import io.ktor.client.HttpClient
+import io.ktor.client.request.bearerAuth
+import io.ktor.client.request.get
+import io.ktor.client.statement.bodyAsText
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.bosowski.keyboard.CallbackTarget
 import net.bosowski.keyboard.stats.FirebaseStatsStore
+import net.bosowski.utlis.Constants
+import java.text.DecimalFormat
 
 class UserOverview : CallbackTarget, AppCompatActivity() {
 
@@ -25,7 +36,25 @@ class UserOverview : CallbackTarget, AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        fetchUserData()
         FirebaseStatsStore.registerCallbackTarget(this)
+    }
+
+    private fun fetchUserData(){
+        GlobalScope.launch {
+            withContext(Dispatchers.Main) {
+                try {
+                    val response = HttpClient().get("${Constants.CHATTERGPT_SERVER_URL}/api/user/info") {
+                        bearerAuth(idToken ?: "")
+                    }
+                    val json = JsonParser.parseString(response.bodyAsText()).asJsonObject
+                    val df = DecimalFormat("#.####")
+                    findViewById<TextView>(R.id.availableCredits).text = getString(R.string.available_credits, df.format(json.get("availableCredits").asFloat))
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
     }
 
     override fun onDataChanged() {

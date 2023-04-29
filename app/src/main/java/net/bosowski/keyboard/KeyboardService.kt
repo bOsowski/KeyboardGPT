@@ -27,6 +27,7 @@ import net.bosowski.MainActivity
 import net.bosowski.keyboard.stats.FirebaseStatsStore
 import net.bosowski.keyboard.stats.StatsModel
 import net.bosowski.keyboard.stats.StatsStore
+import net.bosowski.utlis.Constants
 
 class KeyboardService : View.OnClickListener, InputMethodService() {
 
@@ -111,7 +112,7 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
     private suspend fun updateSuggestion() {
         val allText = getAllText()
         val client = HttpClient()
-        val response = client.post("http://192.168.1.217:8080/api/ai/autocompleteRequest") {
+        val response = client.post("${Constants.CHATTERGPT_SERVER_URL}/api/ai/autocompleteRequest") {
             bearerAuth(idToken ?: "")
             setBody(allText)
         }

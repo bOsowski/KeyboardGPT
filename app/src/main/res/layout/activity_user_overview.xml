@@ -31,12 +31,6 @@
             android:layout_height="wrap_content"
             android:text="@string/available_credits" />
 
-        <TextView
-            android:id="@+id/userCredits"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/used_credits" />
-
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"

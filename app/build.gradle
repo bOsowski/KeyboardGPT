@@ -28,9 +28,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField("String", "CLIENT_ID", "\"" + getClientId() + "\"")
+            buildConfigField("String", "SERVER_URL", "\"" + getServerUrl() + "\"")
         }
         debug {
             buildConfigField("String", "CLIENT_ID", "\"" + getClientId() + "\"")
+            buildConfigField("String", "SERVER_URL", "\"" + getServerUrl() + "\"")
         }
     }
     compileOptions {
@@ -79,4 +81,9 @@ dependencies {
 static def getClientId() {
     def clientId = System.getenv("GOOGLE_CLIENT_ID")
     return clientId
+}
+
+static def getServerUrl(){
+    def serverUrl = System.getenv("CHATTERGPT_SERVER_URL")
+    return serverUrl
 }
