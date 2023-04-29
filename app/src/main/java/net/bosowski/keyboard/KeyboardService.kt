@@ -11,6 +11,8 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.children
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.google.gson.JsonParser
 import io.ktor.client.HttpClient
 import io.ktor.client.request.bearerAuth
@@ -21,6 +23,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import io.ktor.client.request.setBody
+import net.bosowski.MainActivity
+import net.bosowski.keyboard.stats.FirebaseStatsStore
+import net.bosowski.keyboard.stats.StatsModel
+import net.bosowski.keyboard.stats.StatsStore
 
 class KeyboardService : View.OnClickListener, InputMethodService() {
 
@@ -29,22 +35,31 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
     private lateinit var suggestions: Sequence<View>
 
     private var idToken: String? = null
+    private var email: String? = null
+    private var userId: String? = null
+    private var userStats: StatsModel? = null
 
 
     @Override
     override fun onCreateInputView(): View {
         mainView = layoutInflater.inflate(R.layout.keyboard_view, null)
-        idToken = getSharedPreferences("net.bosowski.shared", Context.MODE_PRIVATE).getString(
-            "idToken", null
-        )
+        val sharedPrefs = getSharedPreferences("net.bosowski.shared", Context.MODE_PRIVATE)
+        idToken = sharedPrefs.getString("idToken", null)
+        email = sharedPrefs.getString("email", null)
+        userId = sharedPrefs.getString("userId", null)
+
         suggestions = mainView.findViewById<LinearLayout>(R.id.suggestions_layout).children
+
+        if (idToken != null && email != null && userId != null) {
+            userStats =  FirebaseStatsStore.find(userId!!) ?: StatsModel(null, email!!, userId!!, HashMap(),  0)
+        }
         return mainView
     }
 
     /**
      * Called by the caps button.
      */
-    fun toggleCaps(v: View) {
+    private fun toggleCaps(v: View) {
         capsOn = !capsOn
         for (row in mainView.findViewById<LinearLayout>(R.id.keyboard).children) {
             for (button in (row as LinearLayout).children) {
@@ -59,24 +74,38 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
         }
     }
 
-    /**
-     * Called by special keys that can have their tag translated to keyCode, eg. "DEL" or "CAPS_LOCK".
-     */
-    fun sendTagAsEvent(v: View) {
-        sendDownUpKeyEvents(KeyEvent.keyCodeFromString(v.tag.toString()))
-    }
-
     override fun onClick(v: View) {
-        TODO("Not yet implemented")
-    }
-
-    /**
-     * Used by dynamic textView elements.
-     * eg. button from a-z. The text of those might change based on the capsOn state etc.
-     */
-    fun onClickButton(v: View) {
         v as TextView
-        currentInputConnection.commitText(v.text, 1)
+
+        if (userStats != null) {
+            userStats!!.buttonClicks[v.text.toString()] =
+                userStats!!.buttonClicks.getOrDefault(v.text.toString(), 0) + 1
+            FirebaseStatsStore.set(userStats!!)
+        }
+
+        when (v.tag) {
+            // Called by special keys that can have their tag translated to keyCode, eg. "DEL" or "CAPS_LOCK".
+            in listOf("DEL", "ENTER", "SPACE", "TAB") -> {
+                sendDownUpKeyEvents(KeyEvent.keyCodeFromString(v.tag.toString()))
+                return
+            }
+
+            "CAPS_LOCK" -> {
+                toggleCaps(v)
+            }
+
+            else -> {
+                currentInputConnection.commitText(v.text, 1)
+            }
+        }
+
+        GlobalScope.launch {
+            withContext(Dispatchers.Main) {
+                if (userStats != null) {
+                    updateSuggestion()
+                }
+            }
+        }
     }
 
     private suspend fun updateSuggestion() {
@@ -103,15 +132,19 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
         }
     }
 
+    // Called by the suggestion buttons.
     fun onClickSuggestion(v: View) {
         v as TextView
+
+        userStats!!.completionsUsed++
+        FirebaseStatsStore.set(userStats!!)
+
         if (v.text.isNotEmpty()) {
             replaceAllTextWith(v.text.toString())
         }
     }
 
     private fun replaceAllTextWith(replacement: String) {
-//        currentInputConnection.setSelection(0, 0) //todo: check if this is required
         currentInputConnection.setSelection(0, getAllText().length)
         currentInputConnection.commitText(replacement, replacement.length)
     }
