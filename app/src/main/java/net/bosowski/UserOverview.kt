@@ -60,7 +60,7 @@ class UserOverview : CallbackTarget, AppCompatActivity() {
     override fun onDataChanged() {
         val stats = FirebaseStatsStore.find(userId)
         findViewById<TextView>(R.id.keystrokes).text =
-            getString(R.string.total_keystrokes, stats?.buttonClicks?.size ?: 0)
+            getString(R.string.total_keystrokes, stats?.buttonClicks?.map { it.value }?.sum() ?: 0)
         findViewById<TextView>(R.id.completionClicks).text =
             getString(R.string.completion_clicks, stats?.completionsUsed ?: 0)
     }
