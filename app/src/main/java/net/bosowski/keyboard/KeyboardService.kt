@@ -4,15 +4,12 @@ import android.content.Context
 import android.inputmethodservice.InputMethodService
 import android.view.KeyEvent
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.ExtractedTextRequest
 import net.bosowski.R
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.children
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import com.google.gson.JsonParser
 import io.ktor.client.HttpClient
 import io.ktor.client.request.bearerAuth
@@ -23,10 +20,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import io.ktor.client.request.setBody
-import net.bosowski.MainActivity
+import kotlinx.coroutines.CoroutineScope
 import net.bosowski.keyboard.stats.FirebaseStatsStore
 import net.bosowski.keyboard.stats.StatsModel
-import net.bosowski.keyboard.stats.StatsStore
 import net.bosowski.utlis.Constants
 
 class KeyboardService : View.OnClickListener, InputMethodService() {
@@ -40,10 +36,9 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
     private var userId: String? = null
     private var userStats: StatsModel? = null
 
-
     @Override
     override fun onCreateInputView(): View {
-        mainView = layoutInflater.inflate(R.layout.keyboard_view, null)
+        mainView = layoutInflater.inflate(R.layout.keyboard_view_primary_english, null)
         val sharedPrefs = getSharedPreferences("net.bosowski.shared", Context.MODE_PRIVATE)
         idToken = sharedPrefs.getString("idToken", null)
         email = sharedPrefs.getString("email", null)
@@ -52,7 +47,9 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
         suggestions = mainView.findViewById<LinearLayout>(R.id.suggestions_layout).children
 
         if (idToken != null && email != null && userId != null) {
-            userStats =  FirebaseStatsStore.find(userId!!) ?: StatsModel(null, email!!, userId!!, HashMap(),  0)
+            userStats = FirebaseStatsStore.find(userId!!) ?: StatsModel(
+                null, email!!, userId!!, HashMap(), 0
+            )
         }
         return mainView
     }
@@ -60,7 +57,7 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
     /**
      * Called by the caps button.
      */
-    private fun toggleCaps(v: View) {
+    fun toggleCaps(v: View) {
         capsOn = !capsOn
         for (row in mainView.findViewById<LinearLayout>(R.id.keyboard).children) {
             for (button in (row as LinearLayout).children) {
@@ -79,16 +76,37 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
         v as TextView
 
         if (userStats != null) {
-            userStats!!.buttonClicks[v.text.toString()] =
-                userStats!!.buttonClicks.getOrDefault(v.text.toString(), 0) + 1
+            userStats!!.buttonClicks[v.tag.toString()] =
+                userStats!!.buttonClicks.getOrDefault(v.tag.toString(), 0) + 1
             FirebaseStatsStore.set(userStats!!)
+        }
+
+        if (v.tag in listOf("SPACE", "comma", "period")) {
+            GlobalScope.launch {
+                withContext(Dispatchers.Main) {
+                    if (userStats != null) {
+                        updateSuggestion()
+                    }
+                }
+            }
         }
 
         when (v.tag) {
             // Called by special keys that can have their tag translated to keyCode, eg. "DEL" or "CAPS_LOCK".
-            in listOf("DEL", "ENTER", "SPACE", "TAB") -> {
+            in listOf("DEL", "ENTER", "SPACE", "TAB", "ENTER") -> {
                 sendDownUpKeyEvents(KeyEvent.keyCodeFromString(v.tag.toString()))
-                return
+            }
+
+            "SYMBOLS" -> {
+                mainView = layoutInflater.inflate(R.layout.keyboard_view_symbols_english, null)
+                suggestions = mainView.findViewById<LinearLayout>(R.id.suggestions_layout).children
+                setInputView(mainView)
+            }
+
+            "PRIMARY" -> {
+                mainView = layoutInflater.inflate(R.layout.keyboard_view_primary_english, null)
+                suggestions = mainView.findViewById<LinearLayout>(R.id.suggestions_layout).children
+                setInputView(mainView)
             }
 
             "CAPS_LOCK" -> {
@@ -99,23 +117,16 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
                 currentInputConnection.commitText(v.text, 1)
             }
         }
-
-        GlobalScope.launch {
-            withContext(Dispatchers.Main) {
-                if (userStats != null) {
-                    updateSuggestion()
-                }
-            }
-        }
     }
 
     private suspend fun updateSuggestion() {
         val allText = getAllText()
         val client = HttpClient()
-        val response = client.post("${Constants.CHATTERGPT_SERVER_URL}/api/ai/autocompleteRequest") {
-            bearerAuth(idToken ?: "")
-            setBody(allText)
-        }
+        val response =
+            client.post("${Constants.CHATTERGPT_SERVER_URL}/api/ai/autocompleteRequest") {
+                bearerAuth(idToken ?: "")
+                setBody(allText)
+            }
         val choiceJsonArray =
             JsonParser.parseString(response.bodyAsText()).asJsonObject.get("choices").asJsonArray
 
