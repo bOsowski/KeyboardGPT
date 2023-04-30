@@ -36,7 +36,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClickSuggestion"
-                android:text="suggestion1"
                 app:autoSizeTextType="uniform" />
 
             <TextView
@@ -45,7 +44,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClickSuggestion"
-                android:text="suggestion2"
                 app:autoSizeTextType="uniform" />
 
             <TextView
@@ -54,7 +52,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClickSuggestion"
-                android:text="suggestion3"
                 app:autoSizeTextType="uniform" />
         </LinearLayout>
 

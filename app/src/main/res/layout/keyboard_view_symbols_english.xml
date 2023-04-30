@@ -36,7 +36,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClickSuggestion"
-                android:text="suggestion1"
                 app:autoSizeTextType="uniform" />
 
             <TextView
@@ -45,7 +44,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClickSuggestion"
-                android:text="suggestion2"
                 app:autoSizeTextType="uniform" />
 
             <TextView
@@ -54,7 +52,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClickSuggestion"
-                android:text="suggestion3"
                 app:autoSizeTextType="uniform" />
         </LinearLayout>
 
@@ -346,16 +343,13 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/MORE_SYMBOLS"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1.5"
+                android:layout_weight="1"
                 android:maxLines="1"
-                android:onClick="moreSymbols"
                 android:padding="10dp"
-                android:tag="MORE_SYMBOLS"
-                android:text="£$="
                 android:textStyle="bold"
+                android:visibility="invisible"
                 app:autoSizeTextType="uniform" />
 
             <Button
