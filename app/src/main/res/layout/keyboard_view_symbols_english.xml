@@ -67,132 +67,132 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/Q"
+                android:id="@+id/num_one"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:onClick="onClick"
-                android:padding="-2dp"
-                android:tag="Q"
-                android:text="q"
                 android:contentDescription="1"
+                android:onClick="onClick"
+                android:padding="-2dp"
+                android:tag="num_one"
+                android:text="1"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/W"
+                android:id="@+id/num_two"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="W"
-                android:text="w"
+                android:tag="num_two"
+                android:text="2"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/E"
+                android:id="@+id/num_three"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="E"
-                android:text="e"
+                android:tag="num_three"
+                android:text="3"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/r"
+                android:id="@+id/num_four"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="r"
-                android:text="r"
+                android:tag="num_four"
+                android:text="4"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/T"
+                android:id="@+id/num_five"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="T"
-                android:text="t"
+                android:tag="num_five"
+                android:text="5"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/Y"
+                android:id="@+id/num_six"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="Y"
-                android:text="y"
+                android:tag="num_six"
+                android:text="6"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/U"
+                android:id="@+id/num_seven"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="U"
-                android:text="u"
+                android:tag="num_seven"
+                android:text="7"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/I"
+                android:id="@+id/num_eight"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="I"
-                android:text="i"
+                android:tag="num_eight"
+                android:text="8"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/O"
+                android:id="@+id/num_nine"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="O"
-                android:text="o"
+                android:tag="num_nine"
+                android:text="9"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/P"
+                android:id="@+id/num_zero"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="P"
-                android:text="p"
+                android:tag="num_zero"
+                android:text="0"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
@@ -207,136 +207,134 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/EXTRA1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:visibility="invisible" />
-
-            <Button
-                android:id="@+id/A"
+                android:id="@+id/dash"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="A"
-                android:text="a"
+                android:tag="dash"
+                android:text="-"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/S"
+                android:id="@+id/forward_slash"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="S"
-                android:text="s"
+                android:tag="forward_slash"
+                android:text="/"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/D"
+                android:id="@+id/colon"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="D"
-                android:text="d"
+                android:tag="colon"
+                android:text=":"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/F"
+                android:id="@+id/semicolon"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="F"
-                android:text="f"
+                android:tag="semicolon"
+                android:text=";"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/G"
+                android:id="@+id/open_bracket"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="G"
-                android:text="g"
+                android:tag="open_bracket"
+                android:text="("
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/H"
+                android:id="@+id/close_bracket"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="H"
-                android:text="h"
+                android:tag="close_bracket"
+                android:text=")"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/J"
+                android:id="@+id/euro_sign"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="J"
-                android:text="j"
+                android:tag="euro_sign"
+                android:text="€"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/K"
+                android:id="@+id/and_symbol"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="K"
-                android:text="k"
+                android:tag="and_symbol"
+                android:text="&amp;"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/L"
+                android:id="@+id/at_symbol"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="L"
-                android:text="l"
+                android:tag="at_symbol"
+                android:text="\@"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/EXTRA2"
+                android:id="@+id/double_quote"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.5"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:padding="-2dp"
+                android:tag="double_quote"
+                android:text="&quot;"
+                android:textAllCaps="false"
                 android:textStyle="bold"
-                android:visibility="invisible" />
+                app:autoSizeTextType="uniform" />
         </LinearLayout>
 
         <LinearLayout
@@ -348,105 +346,105 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/CAPS_LOCK"
+                android:id="@+id/MORE_SYMBOLS"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1.5"
                 android:maxLines="1"
-                android:onClick="toggleCaps"
+                android:onClick="moreSymbols"
                 android:padding="10dp"
-                android:tag="CAPS_LOCK"
-                android:text="⇧"
+                android:tag="MORE_SYMBOLS"
+                android:text="£$="
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/Z"
+                android:id="@+id/star_sign"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="Z"
-                android:text="z"
+                android:tag="star_sign"
+                android:text="*"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/X"
+                android:id="@+id/plus_sign"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="X"
-                android:text="x"
+                android:tag="plus_sign"
+                android:text="+"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/C"
+                android:id="@+id/hashtag"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="C"
-                android:text="c"
+                android:tag="hashtag"
+                android:text="#"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/V"
+                android:id="@+id/percent"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="V"
-                android:text="v"
+                android:tag="percent"
+                android:text="%"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/B"
+                android:id="@+id/single_quote"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="B"
-                android:text="b"
+                android:tag="single_quote"
+                android:text="'"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/N"
+                android:id="@+id/exclamation_mark"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="N"
-                android:text="n"
+                android:tag="exclamation_mark"
+                android:text="!"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/M"
+                android:id="@+id/question_mark"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:padding="-2dp"
-                android:tag="M"
-                android:text="m"
+                android:tag="question_mark"
+                android:text="\?"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
@@ -460,7 +458,7 @@
                 android:onClick="onClick"
                 android:padding="10dp"
                 android:tag="DEL"
-                android:text="DEL"
+                android:text="⌫"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
         </LinearLayout>
@@ -473,25 +471,26 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/special"
+                android:id="@+id/PRIMARY"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1.1"
-                android:tag="special"
-                android:text="\?123"
+                android:onClick="onClick"
+                android:tag="PRIMARY"
+                android:text="ABC"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
             <Button
                 android:id="@+id/comma"
                 android:layout_width="0dp"
-                android:layout_weight="0.5"
                 android:layout_height="match_parent"
-                android:textStyle="bold"
+                android:layout_weight="0.5"
+                android:onClick="onClick"
+                android:tag="comma"
                 android:text=","
-                android:tag=","
-                app:autoSizeTextType="uniform"
-            />
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
 
             <Button
                 android:id="@+id/SPACE"
@@ -509,8 +508,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
+                android:onClick="onClick"
+                android:tag="period"
                 android:text="."
-                android:tag="."
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
@@ -519,11 +519,11 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="onClick"
+                android:tag="ENTER"
                 android:text="⏎"
-                android:tag="enter"
                 android:textStyle="bold"
-                app:autoSizeTextType="uniform"
-                />
+                app:autoSizeTextType="uniform" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
