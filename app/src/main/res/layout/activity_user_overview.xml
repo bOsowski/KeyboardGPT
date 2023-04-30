@@ -4,50 +4,94 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:minHeight="10dp"
     tools:context=".UserOverview">
 
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/userOverview"
+            <TextView
+                android:id="@+id/userOverview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="User Overview"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+            <TextView
+                android:id="@+id/availableCredits"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/available_credits" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="5dp"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
+                android:id="@+id/keystrokes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/total_keystrokes" />
+
+            <TextView
+                android:id="@+id/completionClicks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/completion_clicks" />
+        </LinearLayout>
+
+        <com.google.android.material.bottomappbar.BottomAppBar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="User Overview"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:layout_gravity="bottom"
+            app:contentInsetStart="0dp">
 
-        <TextView
-            android:id="@+id/availableCredits"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/available_credits" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginVertical="5dp"
-            android:background="?android:attr/listDivider" />
+                <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:contentDescription="Prediction Settings"
+                    android:src="@drawable/ic_launcher_foreground" />
 
-        <TextView
-            android:id="@+id/keystrokes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/total_keystrokes" />
+                <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:contentDescription="Keyboard Settings"
+                    app:srcCompat="@android:drawable/ic_menu_preferences" />
 
-        <TextView
-            android:id="@+id/completionClicks"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/completion_clicks" />
-    </LinearLayout>
+                <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:contentDescription="Statistics"
+                    android:src="@android:drawable/ic_menu_info_details" />
+
+            </LinearLayout>
+        </com.google.android.material.bottomappbar.BottomAppBar>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
