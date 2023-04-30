@@ -75,6 +75,7 @@
                 android:padding="-2dp"
                 android:tag="Q"
                 android:text="q"
+                android:contentDescription="1"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
@@ -355,7 +356,7 @@
                 android:onClick="toggleCaps"
                 android:padding="10dp"
                 android:tag="CAPS_LOCK"
-                android:text="CAPS"
+                android:text="⇧"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
@@ -472,15 +473,57 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/special"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.1"
+                android:tag="special"
+                android:text="\?123"
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
+            <Button
+                android:id="@+id/comma"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="match_parent"
+                android:textStyle="bold"
+                android:text=","
+                android:tag=","
+                app:autoSizeTextType="uniform"
+            />
+
+            <Button
                 android:id="@+id/SPACE"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:onClick="onClick"
                 android:tag="SPACE"
                 android:text="Space"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
+
+            <Button
+                android:id="@+id/period"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:text="."
+                android:tag="."
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
+            <Button
+                android:id="@+id/enter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="⏎"
+                android:tag="enter"
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform"
+                />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
