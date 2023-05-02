@@ -1,13 +1,17 @@
 package net.bosowski.adapters
 
+import android.R
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageButton
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import net.bosowski.KeyboardGPTApp
-import net.bosowski.models.PredictionSettingModel
 import net.bosowski.databinding.PredictionSettingCardBinding
+import net.bosowski.models.PredictionSettingModel
 import net.bosowski.stores.PredictionSettingsStore
 import timber.log.Timber
+
 
 class PredictionSettingsAdapter(private var predictionSettings: List<PredictionSettingModel>) :
     RecyclerView.Adapter<PredictionSettingsAdapter.MainHolder>() {
@@ -17,7 +21,9 @@ class PredictionSettingsAdapter(private var predictionSettings: List<PredictionS
             PredictionSettingCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return MainHolder(
-            binding, (parent.context.applicationContext as KeyboardGPTApp).predictionSettingsStore, this
+            binding,
+            (parent.context.applicationContext as KeyboardGPTApp).predictionSettingsStore,
+            this
         )
     }
 
@@ -34,10 +40,30 @@ class PredictionSettingsAdapter(private var predictionSettings: List<PredictionS
         private val adapter: PredictionSettingsAdapter
     ) : RecyclerView.ViewHolder(binding.root) {
 
+
+        private fun setStatusImage(predictionSetting: PredictionSettingModel){
+            if (predictionSetting.isOn) {
+                binding.statusButton.setImageResource(R.drawable.star_big_on)
+            } else {
+                binding.statusButton.setImageResource(R.drawable.star_big_off)
+            }
+        }
+
         fun bind(predictionSetting: PredictionSettingModel) {
-            binding.predictionCard.text = predictionSetting.text
+            binding.predictionCard.setText(predictionSetting.text)
 
             val foundPredictionSetting = predictionSettingsStore.find(predictionSetting.id)
+
+            if(foundPredictionSetting != null){
+                setStatusImage(foundPredictionSetting)
+            }
+
+            binding.predictionCard.doOnTextChanged { text, start, before, count ->
+                if(foundPredictionSetting != null) {
+                    foundPredictionSetting.text = text.toString()
+                    predictionSettingsStore.update(foundPredictionSetting)
+                }
+            }
 
             binding.deleteButton.setOnClickListener {
                 Timber.i("Delete button clicked for ${foundPredictionSetting?.id}")
@@ -52,13 +78,7 @@ class PredictionSettingsAdapter(private var predictionSettings: List<PredictionS
                 if (foundPredictionSetting != null) {
                     foundPredictionSetting.isOn = !foundPredictionSetting.isOn
                     predictionSettingsStore.update(foundPredictionSetting)
-                    adapter.notifyItemChanged(adapterPosition)
-                }
-            }
-
-            binding.editButton.setOnClickListener {
-                if (foundPredictionSetting != null) {
-                    // todo
+                    setStatusImage(foundPredictionSetting)
                 }
             }
         }
