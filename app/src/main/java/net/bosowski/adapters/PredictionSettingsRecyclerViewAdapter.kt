@@ -3,18 +3,16 @@ package net.bosowski.adapters
 import android.R
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageButton
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import net.bosowski.KeyboardGPTApp
 import net.bosowski.databinding.PredictionSettingCardBinding
 import net.bosowski.models.PredictionSettingModel
 import net.bosowski.stores.PredictionSettingsStore
-import timber.log.Timber
 
 
-class PredictionSettingsAdapter(private var predictionSettings: List<PredictionSettingModel>) :
-    RecyclerView.Adapter<PredictionSettingsAdapter.MainHolder>() {
+class PredictionSettingsRecyclerViewAdapter(private var predictionSettings: List<PredictionSettingModel>) :
+    RecyclerView.Adapter<PredictionSettingsRecyclerViewAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         val binding =
@@ -37,7 +35,7 @@ class PredictionSettingsAdapter(private var predictionSettings: List<PredictionS
     class MainHolder(
         private val binding: PredictionSettingCardBinding,
         private val predictionSettingsStore: PredictionSettingsStore,
-        private val adapter: PredictionSettingsAdapter
+        private val adapter: PredictionSettingsRecyclerViewAdapter
     ) : RecyclerView.ViewHolder(binding.root) {
 
 

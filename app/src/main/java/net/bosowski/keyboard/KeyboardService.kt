@@ -5,9 +5,11 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.ExtractedTextRequest
+import android.widget.ArrayAdapter
 import net.bosowski.R
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.core.view.children
 import com.google.gson.JsonParser
@@ -21,6 +23,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import io.ktor.client.request.setBody
 import net.bosowski.KeyboardGPTApp
+import net.bosowski.models.PredictionSettingModel
 import net.bosowski.models.StatsModel
 import net.bosowski.utlis.Constants
 
@@ -35,6 +38,7 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
 
     lateinit var primaryKeyboard: LinearLayout
     lateinit var symbolsKeyboard: LinearLayout
+    lateinit var spinner: Spinner
 
     @Override
     override fun onCreateInputView(): View {
@@ -43,15 +47,26 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
 
         primaryKeyboard = (layoutInflater.inflate(
             R.layout.keyboard_view_primary_english, null
-        ) as ViewGroup).findViewById<LinearLayout>(R.id.keyboard)
+        ) as ViewGroup).findViewById(R.id.keyboard)
         (primaryKeyboard.parent as ViewGroup).removeView(primaryKeyboard)
         symbolsKeyboard = (layoutInflater.inflate(
             R.layout.keyboard_view_symbols_english, null
-        ) as ViewGroup).findViewById<LinearLayout>(R.id.keyboard)
+        ) as ViewGroup).findViewById(R.id.keyboard)
         (symbolsKeyboard.parent as ViewGroup).removeView(symbolsKeyboard)
 
         suggestions = mainView.findViewById<LinearLayout>(R.id.suggestions_layout).children
         userStats = app.statsStore.find()
+
+        var predictionSettings = app.predictionSettingsStore.findAll()
+        if(predictionSettings.isEmpty()){
+            predictionSettings = listOf(PredictionSettingModel(text = "Rephrase the text"))
+            app.predictionSettingsStore.create(predictionSettings.first())
+        }
+        spinner = mainView.findViewById(R.id.spinner)
+        spinner.adapter = ArrayAdapter(this,
+            android.R.layout.simple_spinner_item,
+
+            predictionSettings.filter { it.isOn }.map { it.text })
 
         return mainView
     }
@@ -115,6 +130,10 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
                 toggleCaps(v)
             }
 
+            "selected_prediction_setting_image_button" -> {
+                //todo
+            }
+
             else -> {
                 currentInputConnection.commitText(v.text, 1)
             }
@@ -122,7 +141,7 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
     }
 
     private suspend fun updateSuggestion() {
-        val userDefinition = "Rephrase the text"
+        val userDefinition = spinner.selectedItem.toString()
         val allText = getAllText()
         val client = HttpClient()
         val response =

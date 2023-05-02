@@ -14,27 +14,24 @@
         android:layout_height="0dp"
         android:layout_weight="6" />
 
+
     <LinearLayout
-        android:id="@+id/prediction_setting_layout"
+        android:id="@+id/spinner_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5"
+        android:layout_weight="1"
         android:gravity="center"
         android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/imageButton"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            android:src="@android:drawable/ic_menu_edit" />
+            android:text="Prediction Mode: " />
 
-        <TextView
-            android:id="@+id/selected_prediction_setting_text"
+        <Spinner
+            android:id="@+id/spinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
