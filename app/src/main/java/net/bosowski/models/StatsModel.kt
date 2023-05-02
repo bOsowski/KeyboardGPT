@@ -1,4 +1,4 @@
-package net.bosowski.keyboard.stats
+package net.bosowski.models
 
 import android.os.Parcelable
 import androidx.annotation.Keep
@@ -8,7 +8,6 @@ import java.util.Date
 @Parcelize
 data class StatsModel(
     var id: String? = null,
-    var userEmail: String = "",
     var userId: String = "",
     var buttonClicks: HashMap<String, Long> = HashMap(),
     var completionsUsed: Long = 0,

@@ -1,13 +1,15 @@
 package net.bosowski.keyboard
 
-import android.content.Context
 import android.inputmethodservice.InputMethodService
 import android.view.KeyEvent
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.ExtractedTextRequest
+import android.widget.ArrayAdapter
 import net.bosowski.R
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.core.view.children
 import com.google.gson.JsonParser
@@ -20,38 +22,60 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import io.ktor.client.request.setBody
-import kotlinx.coroutines.CoroutineScope
-import net.bosowski.keyboard.stats.FirebaseStatsStore
-import net.bosowski.keyboard.stats.StatsModel
+import net.bosowski.KeyboardGPTApp
+import net.bosowski.models.PredictionSettingModel
+import net.bosowski.models.StatsModel
 import net.bosowski.utlis.Constants
+import net.bosowski.utlis.Observer
 
-class KeyboardService : View.OnClickListener, InputMethodService() {
+class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
 
     private var capsOn = false
     private lateinit var mainView: View
     private lateinit var suggestions: Sequence<View>
 
-    private var idToken: String? = null
-    private var email: String? = null
-    private var userId: String? = null
+    private lateinit var app: KeyboardGPTApp
     private var userStats: StatsModel? = null
+
+    lateinit var primaryKeyboard: LinearLayout
+    lateinit var symbolsKeyboard: LinearLayout
+    lateinit var spinner: Spinner
 
     @Override
     override fun onCreateInputView(): View {
+        app = application as KeyboardGPTApp
         mainView = layoutInflater.inflate(R.layout.keyboard_view_primary_english, null)
-        val sharedPrefs = getSharedPreferences("net.bosowski.shared", Context.MODE_PRIVATE)
-        idToken = sharedPrefs.getString("idToken", null)
-        email = sharedPrefs.getString("email", null)
-        userId = sharedPrefs.getString("userId", null)
+
+        primaryKeyboard = (layoutInflater.inflate(
+            R.layout.keyboard_view_primary_english, null
+        ) as ViewGroup).findViewById(R.id.keyboard)
+        (primaryKeyboard.parent as ViewGroup).removeView(primaryKeyboard)
+        symbolsKeyboard = (layoutInflater.inflate(
+            R.layout.keyboard_view_symbols_english, null
+        ) as ViewGroup).findViewById(R.id.keyboard)
+        (symbolsKeyboard.parent as ViewGroup).removeView(symbolsKeyboard)
 
         suggestions = mainView.findViewById<LinearLayout>(R.id.suggestions_layout).children
+        userStats = app.statsStore.find()
 
-        if (idToken != null && email != null && userId != null) {
-            userStats = FirebaseStatsStore.find(userId!!) ?: StatsModel(
-                null, email!!, userId!!, HashMap(), 0
-            )
-        }
+        app.predictionSettingsStore.registerObserver(this)
+
+        spinner = mainView.findViewById(R.id.spinner)
+        onDataChanged()
+
         return mainView
+    }
+
+    override fun onDataChanged() {
+        var predictionSettings = app.predictionSettingsStore.findAll()
+        if (predictionSettings.isEmpty()) {
+            predictionSettings = listOf(PredictionSettingModel(text = "Rephrase the text")) as ArrayList<PredictionSettingModel>
+            app.predictionSettingsStore.create(predictionSettings.first())
+        }
+
+        spinner.adapter = ArrayAdapter(this,
+            android.R.layout.simple_spinner_item,
+            predictionSettings.filter { it.isOn }.map { it.text })
     }
 
     /**
@@ -78,19 +102,10 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
         if (userStats != null) {
             userStats!!.buttonClicks[v.tag.toString()] =
                 userStats!!.buttonClicks.getOrDefault(v.tag.toString(), 0) + 1
-            FirebaseStatsStore.set(userStats!!)
+            app.statsStore.set(userStats!!)
         }
 
-        if (v.tag in listOf("SPACE", "comma", "period")) {
-            GlobalScope.launch {
-                withContext(Dispatchers.Main) {
-                    if (userStats != null) {
-                        updateSuggestion()
-                    }
-                }
-            }
-        }
-
+        val keyboardRoot = mainView as ViewGroup
         when (v.tag) {
             // Called by special keys that can have their tag translated to keyCode, eg. "DEL" or "CAPS_LOCK".
             in listOf("DEL", "ENTER", "SPACE", "TAB", "ENTER") -> {
@@ -98,15 +113,13 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
             }
 
             "SYMBOLS" -> {
-                mainView = layoutInflater.inflate(R.layout.keyboard_view_symbols_english, null)
-                suggestions = mainView.findViewById<LinearLayout>(R.id.suggestions_layout).children
-                setInputView(mainView)
+                keyboardRoot.removeView(mainView.findViewById(R.id.keyboard))
+                keyboardRoot.addView(symbolsKeyboard)
             }
 
             "PRIMARY" -> {
-                mainView = layoutInflater.inflate(R.layout.keyboard_view_primary_english, null)
-                suggestions = mainView.findViewById<LinearLayout>(R.id.suggestions_layout).children
-                setInputView(mainView)
+                keyboardRoot.removeView(mainView.findViewById(R.id.keyboard))
+                keyboardRoot.addView(primaryKeyboard)
             }
 
             "CAPS_LOCK" -> {
@@ -120,28 +133,33 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
     }
 
     private suspend fun updateSuggestion() {
+        val userDefinition = spinner.selectedItem.toString()
         val allText = getAllText()
         val client = HttpClient()
         val response =
             client.post("${Constants.CHATTERGPT_SERVER_URL}/api/ai/autocompleteRequest") {
-                bearerAuth(idToken ?: "")
-                setBody(allText)
+                bearerAuth(app.idToken ?: "")
+                setBody("${userDefinition}, given the following:\"${allText}\"")
             }
-        val choiceJsonArray =
-            JsonParser.parseString(response.bodyAsText()).asJsonObject.get("choices").asJsonArray
+        val choicesJson = JsonParser.parseString(response.bodyAsText()).asJsonObject.get("choices")
 
-        val choices = choiceJsonArray.map { it.asJsonObject.get("text").asString }.toSet()
+        if(!choicesJson.isJsonNull){
+            val choiceJsonArray = choicesJson.asJsonArray
 
-        suggestions.forEachIndexed { index, view ->
-            view as TextView
-            if (choices.size <= index) {
-                view.text = ""
-            } else {
-                view.text =
-                    choices.elementAt(index).replace("\n\n\"", "").reversed().replace("\"", "")
-                        .reversed()
+            val choices = choiceJsonArray.map { it.asJsonObject.get("text").asString.trim() }.toSet()
+
+            suggestions.forEachIndexed { index, view ->
+                view as TextView
+                if (choices.size <= index) {
+                    view.text = ""
+                } else {
+                    view.text =
+                        choices.elementAt(index).replace("\n\n\"", "").reversed().replace("\"", "")
+                            .reversed()
+                }
             }
         }
+
     }
 
     // Called by the suggestion buttons.
@@ -149,7 +167,7 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
         v as TextView
 
         userStats!!.completionsUsed++
-        FirebaseStatsStore.set(userStats!!)
+        app.statsStore.set(userStats!!)
 
         if (v.text.isNotEmpty()) {
             replaceAllTextWith(v.text.toString())
@@ -164,5 +182,15 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
     private fun getAllText(): String {
         val allText = currentInputConnection.getExtractedText(ExtractedTextRequest(), 0)
         return allText?.text?.toString() ?: ""
+    }
+
+    fun ai_api_call(view: View) {
+        GlobalScope.launch {
+            withContext(Dispatchers.Main) {
+                if (userStats != null) {
+                    updateSuggestion()
+                }
+            }
+        }
     }
 }

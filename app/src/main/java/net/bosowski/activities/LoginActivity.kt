@@ -1,4 +1,4 @@
-package net.bosowski
+package net.bosowski.activities
 
 import android.app.Activity
 import android.content.Intent
@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -18,18 +17,26 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import net.bosowski.BuildConfig
+import net.bosowski.KeyboardGPTApp
+import net.bosowski.R
+import net.bosowski.stores.FirebasePredictionSettingsStore
+import net.bosowski.stores.FirebaseStatsStore
 
 
-class MainActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
     private lateinit var mGoogleSignInClient: GoogleSignInClient
+
+    private lateinit var app: KeyboardGPTApp
 
     private lateinit var auth: FirebaseAuth
     private lateinit var user: FirebaseUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        app = application as KeyboardGPTApp
+        setContentView(R.layout.activity_login)
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -63,10 +70,10 @@ class MainActivity : AppCompatActivity() {
                     if(task.isSuccessful){
                         user = auth.currentUser!!
                         val myIntent = Intent(this, UserOverview::class.java)
-                        // Using shared preferences as the idToken is needed in the KayboardService view, that can start without on its own
-                        getSharedPreferences("net.bosowski.shared", MODE_PRIVATE).edit().putString("idToken", account.idToken).apply()
-                        getSharedPreferences("net.bosowski.shared", MODE_PRIVATE).edit().putString("email", account.email).apply()
-                        getSharedPreferences("net.bosowski.shared", MODE_PRIVATE).edit().putString("userId", account.id).apply()
+                        app.idToken = account.idToken!!
+                        app.userId = account.id!!
+                        app.statsStore = FirebaseStatsStore(app.userId)
+                        app.predictionSettingsStore = FirebasePredictionSettingsStore(app.userId)
                         startActivity(myIntent)
                     }
                 }

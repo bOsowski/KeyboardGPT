@@ -8,12 +8,6 @@
     android:padding="10dp"
     tools:context=".keyboard.KeyboardService">
 
-    <TextView
-        android:id="@+id/textContainer"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="6" />
-
     <LinearLayout
         android:id="@+id/keyboard"
         android:layout_width="match_parent"
@@ -21,39 +15,6 @@
         android:layout_weight="4"
         android:gravity="center"
         android:orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/suggestions_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/suggestion1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:onClick="onClickSuggestion"
-                app:autoSizeTextType="uniform" />
-
-            <TextView
-                android:id="@+id/suggestion2"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:onClick="onClickSuggestion"
-                app:autoSizeTextType="uniform" />
-
-            <TextView
-                android:id="@+id/suggestion3"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:onClick="onClickSuggestion"
-                app:autoSizeTextType="uniform" />
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/first_row"
