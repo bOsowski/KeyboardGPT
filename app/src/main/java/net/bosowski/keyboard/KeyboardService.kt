@@ -3,6 +3,7 @@ package net.bosowski.keyboard
 import android.inputmethodservice.InputMethodService
 import android.view.KeyEvent
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.ExtractedTextRequest
 import net.bosowski.R
 import android.widget.Button
@@ -32,10 +33,22 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
     private lateinit var app: KeyboardGPTApp
     private var userStats: StatsModel? = null
 
+    lateinit var primaryKeyboard: LinearLayout
+    lateinit var symbolsKeyboard: LinearLayout
+
     @Override
     override fun onCreateInputView(): View {
         app = application as KeyboardGPTApp
         mainView = layoutInflater.inflate(R.layout.keyboard_view_primary_english, null)
+
+        primaryKeyboard = (layoutInflater.inflate(
+            R.layout.keyboard_view_primary_english, null
+        ) as ViewGroup).findViewById<LinearLayout>(R.id.keyboard)
+        (primaryKeyboard.parent as ViewGroup).removeView(primaryKeyboard)
+        symbolsKeyboard = (layoutInflater.inflate(
+            R.layout.keyboard_view_symbols_english, null
+        ) as ViewGroup).findViewById<LinearLayout>(R.id.keyboard)
+        (symbolsKeyboard.parent as ViewGroup).removeView(symbolsKeyboard)
 
         suggestions = mainView.findViewById<LinearLayout>(R.id.suggestions_layout).children
         userStats = app.statsStore.find()
@@ -80,6 +93,8 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
             }
         }
 
+
+        val keyboardRoot = mainView as ViewGroup
         when (v.tag) {
             // Called by special keys that can have their tag translated to keyCode, eg. "DEL" or "CAPS_LOCK".
             in listOf("DEL", "ENTER", "SPACE", "TAB", "ENTER") -> {
@@ -87,15 +102,13 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
             }
 
             "SYMBOLS" -> {
-                mainView = layoutInflater.inflate(R.layout.keyboard_view_symbols_english, null)
-                suggestions = mainView.findViewById<LinearLayout>(R.id.suggestions_layout).children
-                setInputView(mainView)
+                keyboardRoot.removeView(mainView.findViewById(R.id.keyboard))
+                keyboardRoot.addView(symbolsKeyboard)
             }
 
             "PRIMARY" -> {
-                mainView = layoutInflater.inflate(R.layout.keyboard_view_primary_english, null)
-                suggestions = mainView.findViewById<LinearLayout>(R.id.suggestions_layout).children
-                setInputView(mainView)
+                keyboardRoot.removeView(mainView.findViewById(R.id.keyboard))
+                keyboardRoot.addView(primaryKeyboard)
             }
 
             "CAPS_LOCK" -> {

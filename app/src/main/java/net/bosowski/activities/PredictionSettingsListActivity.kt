@@ -43,7 +43,7 @@ class PredictionSettingsListActivity: AppCompatActivity(){
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val predictionSetting = PredictionSettingModel(text = "Rephrase the text")
         app.predictionSettingsStore.create(predictionSetting)
-        adapter.notifyDataSetChanged()
+        adapter.notifyItemInserted(adapter.itemCount - 1)
         return super.onOptionsItemSelected(item)
     }
 }

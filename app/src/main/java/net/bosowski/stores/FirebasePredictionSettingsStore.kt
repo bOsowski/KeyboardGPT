@@ -20,9 +20,11 @@ class FirebasePredictionSettingsStore(private val userId: String) : PredictionSe
     private val postListener = object : ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             if (dataSnapshot.exists()) {
-                predictionSettings = dataSnapshot.children.mapNotNull {
+                val currentData = dataSnapshot.children.mapNotNull {
                     it.getValue(PredictionSettingModel::class.java)
                 } as ArrayList<PredictionSettingModel>
+                predictionSettings.clear()
+                predictionSettings.addAll(currentData)
                 Timber.i("Firebase Success : StatsModel Added")
                 observers.forEach { it.onDataChanged() }
             }

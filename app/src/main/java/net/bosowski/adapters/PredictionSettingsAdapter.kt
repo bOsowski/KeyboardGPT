@@ -41,7 +41,7 @@ class PredictionSettingsAdapter(private var predictionSettings: List<PredictionS
     ) : RecyclerView.ViewHolder(binding.root) {
 
 
-        private fun setStatusImage(predictionSetting: PredictionSettingModel){
+        private fun setStatusImage(predictionSetting: PredictionSettingModel) {
             if (predictionSetting.isOn) {
                 binding.statusButton.setImageResource(R.drawable.star_big_on)
             } else {
@@ -52,34 +52,25 @@ class PredictionSettingsAdapter(private var predictionSettings: List<PredictionS
         fun bind(predictionSetting: PredictionSettingModel) {
             binding.predictionCard.setText(predictionSetting.text)
 
-            val foundPredictionSetting = predictionSettingsStore.find(predictionSetting.id)
-
-            if(foundPredictionSetting != null){
-                setStatusImage(foundPredictionSetting)
-            }
+            setStatusImage(predictionSetting)
 
             binding.predictionCard.doOnTextChanged { text, start, before, count ->
-                if(foundPredictionSetting != null) {
-                    foundPredictionSetting.text = text.toString()
-                    predictionSettingsStore.update(foundPredictionSetting)
-                }
+                predictionSetting.text = text.toString()
+                predictionSettingsStore.update(predictionSetting)
             }
 
             binding.deleteButton.setOnClickListener {
-                Timber.i("Delete button clicked for ${foundPredictionSetting?.id}")
-                if (foundPredictionSetting != null) {
-                    predictionSettingsStore.delete(foundPredictionSetting)
+//                Timber.i("Delete button clicked for ${foundPredictionSetting?.id}")
+                if (predictionSetting != null) {
+                    predictionSettingsStore.delete(predictionSetting)
                 }
-                adapter.predictionSettings = predictionSettingsStore.findAll()
                 adapter.notifyDataSetChanged()
             }
 
             binding.statusButton.setOnClickListener {
-                if (foundPredictionSetting != null) {
-                    foundPredictionSetting.isOn = !foundPredictionSetting.isOn
-                    predictionSettingsStore.update(foundPredictionSetting)
-                    setStatusImage(foundPredictionSetting)
-                }
+                predictionSetting.isOn = !predictionSetting.isOn
+                predictionSettingsStore.update(predictionSetting)
+                setStatusImage(predictionSetting)
             }
         }
     }
