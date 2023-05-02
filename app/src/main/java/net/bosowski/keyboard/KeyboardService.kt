@@ -105,17 +105,6 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
             app.statsStore.set(userStats!!)
         }
 
-        if (v.tag in listOf("SPACE", "comma", "period")) {
-            GlobalScope.launch {
-                withContext(Dispatchers.Main) {
-                    if (userStats != null) {
-                        updateSuggestion()
-                    }
-                }
-            }
-        }
-
-
         val keyboardRoot = mainView as ViewGroup
         when (v.tag) {
             // Called by special keys that can have their tag translated to keyCode, eg. "DEL" or "CAPS_LOCK".
@@ -135,10 +124,6 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
 
             "CAPS_LOCK" -> {
                 toggleCaps(v)
-            }
-
-            "selected_prediction_setting_image_button" -> {
-                //todo
             }
 
             else -> {
@@ -197,5 +182,15 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
     private fun getAllText(): String {
         val allText = currentInputConnection.getExtractedText(ExtractedTextRequest(), 0)
         return allText?.text?.toString() ?: ""
+    }
+
+    fun ai_api_call(view: View) {
+        GlobalScope.launch {
+            withContext(Dispatchers.Main) {
+                if (userStats != null) {
+                    updateSuggestion()
+                }
+            }
+        }
     }
 }

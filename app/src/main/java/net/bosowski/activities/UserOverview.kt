@@ -1,11 +1,12 @@
 package net.bosowski.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.JsonParser
 import io.ktor.client.HttpClient
 import io.ktor.client.request.bearerAuth
@@ -15,11 +16,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import net.bosowski.BuildConfig.SERVER_URL
 import net.bosowski.KeyboardGPTApp
 import net.bosowski.R
 import net.bosowski.utlis.Constants
 import net.bosowski.utlis.Observer
 import java.text.DecimalFormat
+
 
 class UserOverview : Observer, AppCompatActivity() {
 
@@ -37,16 +40,19 @@ class UserOverview : Observer, AppCompatActivity() {
         fetchUserData()
     }
 
-    private fun fetchUserData(){
+    private fun fetchUserData() {
         GlobalScope.launch {
             withContext(Dispatchers.Main) {
                 try {
-                    val response = HttpClient().get("${Constants.CHATTERGPT_SERVER_URL}/api/user/info") {
-                        bearerAuth(app.idToken ?: "")
-                    }
+                    val response =
+                        HttpClient().get("${Constants.CHATTERGPT_SERVER_URL}/api/user/info") {
+                            bearerAuth(app.idToken ?: "")
+                        }
                     val json = JsonParser.parseString(response.bodyAsText()).asJsonObject
                     val df = DecimalFormat("#.####")
-                    findViewById<TextView>(R.id.availableCredits).text = getString(R.string.available_credits, df.format(json.get("availableCredits").asFloat))
+                    findViewById<TextView>(R.id.availableCredits).text = getString(
+                        R.string.available_credits, df.format(json.get("availableCredits").asFloat)
+                    )
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -70,6 +76,11 @@ class UserOverview : Observer, AppCompatActivity() {
             true
         }
         return super.onCreateOptionsMenu(menu)
+    }
+
+    fun buyCredits(view: View) {
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(SERVER_URL))
+        startActivity(browserIntent)
     }
 
 }
