@@ -1,38 +1,34 @@
-package net.bosowski.keyboard.stats
+package net.bosowski.stores
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import net.bosowski.keyboard.CallbackTarget
+import com.google.firebase.database.ktx.getValue
+import net.bosowski.utlis.AbstractObserverNotifier
+import net.bosowski.models.StatsModel
 import timber.log.Timber
 
-object FirebaseStatsStore : StatsStore {
+class FirebaseStatsStore(private val userId: String) : StatsStore, AbstractObserverNotifier() {
 
     private val database: DatabaseReference =
         FirebaseDatabase.getInstance("https://chattergpt-default-rtdb.europe-west1.firebasedatabase.app/").reference
 
-    val callbackTargets = HashSet<CallbackTarget>()
-
-    fun registerCallbackTarget(callbackTarget: CallbackTarget) {
-        callbackTargets.add(callbackTarget)
-    }
-
-    private var statsModels: HashMap<String, StatsModel> = HashMap()
-//    private var statsModels: ArrayList<StatsModel> = ArrayList()
+    private var statsModel: StatsModel? = null
 
     private val postListener = object : ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             // Get Post object and use the values to update the UI
             if (dataSnapshot.exists()) {
-//                dataSnapshot.children.mapNotNullTo(statsModels) { it.getValue<StatsModel>() }
-                dataSnapshot.children.mapNotNull { it.getValue(StatsModel::class.java) }.forEach {
-                    statsModels[it.userId] = it
-                }
-                Timber.i("Firebase Success : StatsModel Added")
-                callbackTargets.forEach { it.onDataChanged() }
+                statsModel = dataSnapshot.getValue<StatsModel>()!!
             }
+            else{
+                statsModel = StatsModel(userId = userId)
+            }
+
+            Timber.i("Firebase Success : StatsModel Added")
+            observers.forEach { it.onDataChanged() }
         }
 
         override fun onCancelled(databaseError: DatabaseError) {
@@ -42,7 +38,7 @@ object FirebaseStatsStore : StatsStore {
     }
 
     init {
-        database.child("stats").addValueEventListener(postListener)
+        database.child("stats").child(userId).addValueEventListener(postListener)
     }
 
     override fun set(statsModel: StatsModel) {
@@ -55,7 +51,8 @@ object FirebaseStatsStore : StatsStore {
         database.child("stats").child(statsModel.userId).setValue(statsModel)
     }
 
-    override fun find(userId: String): StatsModel? {
-        return statsModels[userId]
+    override fun find(): StatsModel? {
+        return statsModel
     }
+
 }

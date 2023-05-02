@@ -1,6 +1,5 @@
 package net.bosowski.keyboard
 
-import android.content.Context
 import android.inputmethodservice.InputMethodService
 import android.view.KeyEvent
 import android.view.View
@@ -20,9 +19,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import io.ktor.client.request.setBody
-import kotlinx.coroutines.CoroutineScope
-import net.bosowski.keyboard.stats.FirebaseStatsStore
-import net.bosowski.keyboard.stats.StatsModel
+import net.bosowski.KeyboardGPTApp
+import net.bosowski.models.StatsModel
 import net.bosowski.utlis.Constants
 
 class KeyboardService : View.OnClickListener, InputMethodService() {
@@ -31,26 +29,17 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
     private lateinit var mainView: View
     private lateinit var suggestions: Sequence<View>
 
-    private var idToken: String? = null
-    private var email: String? = null
-    private var userId: String? = null
+    private lateinit var app: KeyboardGPTApp
     private var userStats: StatsModel? = null
 
     @Override
     override fun onCreateInputView(): View {
+        app = application as KeyboardGPTApp
         mainView = layoutInflater.inflate(R.layout.keyboard_view_primary_english, null)
-        val sharedPrefs = getSharedPreferences("net.bosowski.shared", Context.MODE_PRIVATE)
-        idToken = sharedPrefs.getString("idToken", null)
-        email = sharedPrefs.getString("email", null)
-        userId = sharedPrefs.getString("userId", null)
 
         suggestions = mainView.findViewById<LinearLayout>(R.id.suggestions_layout).children
+        userStats = app.statsStore.find()
 
-        if (idToken != null && email != null && userId != null) {
-            userStats = FirebaseStatsStore.find(userId!!) ?: StatsModel(
-                null, email!!, userId!!, HashMap(), 0
-            )
-        }
         return mainView
     }
 
@@ -78,7 +67,7 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
         if (userStats != null) {
             userStats!!.buttonClicks[v.tag.toString()] =
                 userStats!!.buttonClicks.getOrDefault(v.tag.toString(), 0) + 1
-            FirebaseStatsStore.set(userStats!!)
+            app.statsStore.set(userStats!!)
         }
 
         if (v.tag in listOf("SPACE", "comma", "period")) {
@@ -120,12 +109,13 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
     }
 
     private suspend fun updateSuggestion() {
+        val userDefinition = "Rephrase the text"
         val allText = getAllText()
         val client = HttpClient()
         val response =
             client.post("${Constants.CHATTERGPT_SERVER_URL}/api/ai/autocompleteRequest") {
-                bearerAuth(idToken ?: "")
-                setBody(allText)
+                bearerAuth(app.idToken ?: "")
+                setBody("${userDefinition}, given the following:\"${allText}\"")
             }
         val choiceJsonArray =
             JsonParser.parseString(response.bodyAsText()).asJsonObject.get("choices").asJsonArray
@@ -149,7 +139,7 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
         v as TextView
 
         userStats!!.completionsUsed++
-        FirebaseStatsStore.set(userStats!!)
+        app.statsStore.set(userStats!!)
 
         if (v.text.isNotEmpty()) {
             replaceAllTextWith(v.text.toString())

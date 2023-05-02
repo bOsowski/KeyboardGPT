@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:minHeight="10dp"
-    tools:context=".UserOverview">
+    tools:context=".activities.UserOverview">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -81,6 +81,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:onClick="onSettingsClick"
                     android:contentDescription="Keyboard Settings"
                     app:srcCompat="@android:drawable/ic_menu_preferences" />
 

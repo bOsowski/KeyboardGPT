@@ -1,8 +1,9 @@
-package net.bosowski
+package net.bosowski.activities
 
-import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import com.google.gson.JsonParser
 import io.ktor.client.HttpClient
@@ -13,31 +14,26 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import net.bosowski.keyboard.CallbackTarget
-import net.bosowski.keyboard.stats.FirebaseStatsStore
+import net.bosowski.KeyboardGPTApp
+import net.bosowski.R
 import net.bosowski.utlis.Constants
+import net.bosowski.utlis.Observer
 import java.text.DecimalFormat
 
-class UserOverview : CallbackTarget, AppCompatActivity() {
+class UserOverview : Observer, AppCompatActivity() {
 
-    private lateinit var idToken: String
-    private lateinit var email: String
-    private lateinit var userId: String
+    private lateinit var app: KeyboardGPTApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        app = application as KeyboardGPTApp
         setContentView(R.layout.activity_user_overview)
-
-        val sharedPrefs = getSharedPreferences("net.bosowski.shared", Context.MODE_PRIVATE)
-        idToken = sharedPrefs.getString("idToken", null).toString()
-        email = sharedPrefs.getString("email", null).toString()
-        userId = sharedPrefs.getString("userId", null).toString()
+        app.statsStore.registerObserver(this)
     }
 
     override fun onStart() {
         super.onStart()
         fetchUserData()
-        FirebaseStatsStore.registerCallbackTarget(this)
     }
 
     private fun fetchUserData(){
@@ -45,7 +41,7 @@ class UserOverview : CallbackTarget, AppCompatActivity() {
             withContext(Dispatchers.Main) {
                 try {
                     val response = HttpClient().get("${Constants.CHATTERGPT_SERVER_URL}/api/user/info") {
-                        bearerAuth(idToken ?: "")
+                        bearerAuth(app.idToken ?: "")
                     }
                     val json = JsonParser.parseString(response.bodyAsText()).asJsonObject
                     val df = DecimalFormat("#.####")
@@ -58,11 +54,16 @@ class UserOverview : CallbackTarget, AppCompatActivity() {
     }
 
     override fun onDataChanged() {
-        val stats = FirebaseStatsStore.find(userId)
+        val stats = app.statsStore.find()
         findViewById<TextView>(R.id.keystrokes).text =
             getString(R.string.total_keystrokes, stats?.buttonClicks?.map { it.value }?.sum() ?: 0)
         findViewById<TextView>(R.id.completionClicks).text =
             getString(R.string.completion_clicks, stats?.completionsUsed ?: 0)
+    }
+
+    fun onSettingsClick(view: View) {
+        val launcherIntent = Intent(this, PredictionSettingsListActivity::class.java)
+        startActivity(launcherIntent)
     }
 
 }
