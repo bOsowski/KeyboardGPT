@@ -63,7 +63,12 @@ class FirebasePredictionSettingsStore(private val userId: String) : PredictionSe
             .child(predictionSettingModel.id).removeValue()
     }
 
-    override fun findAll(): List<PredictionSettingModel> {
+    override fun deleteAll() {
+        predictionSettings.clear()
+        database.child("prediction_settings").child(userId).removeValue()
+    }
+
+    override fun findAll(): ArrayList<PredictionSettingModel> {
         return predictionSettings
     }
 

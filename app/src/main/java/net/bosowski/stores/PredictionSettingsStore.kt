@@ -7,6 +7,7 @@ interface PredictionSettingsStore {
     fun create(predictionSettingModel: PredictionSettingModel)
     fun update(predictionSettingModel: PredictionSettingModel)
     fun delete(predictionSettingModel: PredictionSettingModel)
+    fun deleteAll()
     fun findAll(): List<PredictionSettingModel>
     fun find(id: String): PredictionSettingModel?
 }

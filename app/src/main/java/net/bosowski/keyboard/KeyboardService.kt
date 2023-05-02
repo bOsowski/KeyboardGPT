@@ -26,8 +26,9 @@ import net.bosowski.KeyboardGPTApp
 import net.bosowski.models.PredictionSettingModel
 import net.bosowski.models.StatsModel
 import net.bosowski.utlis.Constants
+import net.bosowski.utlis.Observer
 
-class KeyboardService : View.OnClickListener, InputMethodService() {
+class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
 
     private var capsOn = false
     private lateinit var mainView: View
@@ -57,18 +58,24 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
         suggestions = mainView.findViewById<LinearLayout>(R.id.suggestions_layout).children
         userStats = app.statsStore.find()
 
-        var predictionSettings = app.predictionSettingsStore.findAll()
-        if(predictionSettings.isEmpty()){
-            predictionSettings = listOf(PredictionSettingModel(text = "Rephrase the text"))
-            app.predictionSettingsStore.create(predictionSettings.first())
-        }
-        spinner = mainView.findViewById(R.id.spinner)
-        spinner.adapter = ArrayAdapter(this,
-            android.R.layout.simple_spinner_item,
+        app.predictionSettingsStore.registerObserver(this)
 
-            predictionSettings.filter { it.isOn }.map { it.text })
+        spinner = mainView.findViewById(R.id.spinner)
+        onDataChanged()
 
         return mainView
+    }
+
+    override fun onDataChanged() {
+        var predictionSettings = app.predictionSettingsStore.findAll()
+        if (predictionSettings.isEmpty()) {
+            predictionSettings = listOf(PredictionSettingModel(text = "Rephrase the text")) as ArrayList<PredictionSettingModel>
+            app.predictionSettingsStore.create(predictionSettings.first())
+        }
+
+        spinner.adapter = ArrayAdapter(this,
+            android.R.layout.simple_spinner_item,
+            predictionSettings.filter { it.isOn }.map { it.text })
     }
 
     /**
@@ -149,21 +156,25 @@ class KeyboardService : View.OnClickListener, InputMethodService() {
                 bearerAuth(app.idToken ?: "")
                 setBody("${userDefinition}, given the following:\"${allText}\"")
             }
-        val choiceJsonArray =
-            JsonParser.parseString(response.bodyAsText()).asJsonObject.get("choices").asJsonArray
+        val choicesJson = JsonParser.parseString(response.bodyAsText()).asJsonObject.get("choices")
 
-        val choices = choiceJsonArray.map { it.asJsonObject.get("text").asString }.toSet()
+        if(!choicesJson.isJsonNull){
+            val choiceJsonArray = choicesJson.asJsonArray
 
-        suggestions.forEachIndexed { index, view ->
-            view as TextView
-            if (choices.size <= index) {
-                view.text = ""
-            } else {
-                view.text =
-                    choices.elementAt(index).replace("\n\n\"", "").reversed().replace("\"", "")
-                        .reversed()
+            val choices = choiceJsonArray.map { it.asJsonObject.get("text").asString.trim() }.toSet()
+
+            suggestions.forEachIndexed { index, view ->
+                view as TextView
+                if (choices.size <= index) {
+                    view.text = ""
+                } else {
+                    view.text =
+                        choices.elementAt(index).replace("\n\n\"", "").reversed().replace("\"", "")
+                            .reversed()
+                }
             }
         }
+
     }
 
     // Called by the suggestion buttons.

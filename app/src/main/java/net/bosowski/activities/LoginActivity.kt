@@ -24,7 +24,7 @@ import net.bosowski.stores.FirebasePredictionSettingsStore
 import net.bosowski.stores.FirebaseStatsStore
 
 
-class MainActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
     private lateinit var mGoogleSignInClient: GoogleSignInClient
 
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         app = application as KeyboardGPTApp
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_login)
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.

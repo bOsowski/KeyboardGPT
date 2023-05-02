@@ -18,6 +18,8 @@ class PredictionSettingsListActivity: AppCompatActivity(){
 
     private lateinit var adapter: PredictionSettingsRecyclerViewAdapter
 
+    private val currentPredictionSettings = ArrayList<PredictionSettingModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = PredictionSettingsListBinding.inflate(layoutInflater)
@@ -28,12 +30,37 @@ class PredictionSettingsListActivity: AppCompatActivity(){
 
         val layoutManager = LinearLayoutManager(this)
         binding.settingsRecyclerView.layoutManager = layoutManager
-        adapter = PredictionSettingsRecyclerViewAdapter(app.predictionSettingsStore.findAll())
+
+        currentPredictionSettings.addAll(app.predictionSettingsStore.findAll())
+        adapter = PredictionSettingsRecyclerViewAdapter(currentPredictionSettings)
         binding.settingsRecyclerView.adapter = adapter
+
+        binding.floatingActionButton.setOnClickListener{ view ->
+            val predictionSetting = PredictionSettingModel(text = "Rephrase the text")
+            currentPredictionSettings.add(predictionSetting)
+            adapter.notifyItemInserted(adapter.itemCount - 1)
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_prediction_settings, menu)
+
+        menu!!.findItem(R.id.save_button).setOnMenuItemClickListener { item ->
+            app.predictionSettingsStore.deleteAll()
+            currentPredictionSettings.forEach {
+                app.predictionSettingsStore.create(it)
+            }
+            finish()
+            true
+        }
+        menu.findItem(R.id.cancel_button).setOnMenuItemClickListener { item ->
+            currentPredictionSettings.clear()
+            currentPredictionSettings.addAll(app.predictionSettingsStore.findAll())
+            finish()
+            true
+        }
+
         return super.onCreateOptionsMenu(menu)
     }
 

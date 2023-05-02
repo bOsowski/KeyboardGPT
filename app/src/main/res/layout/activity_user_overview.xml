@@ -72,10 +72,10 @@
 
                 <ImageButton
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:contentDescription="Prediction Settings"
-                    android:src="@drawable/ic_launcher_foreground" />
+                    android:contentDescription="Statistics"
+                    android:src="@android:drawable/ic_menu_info_details" />
 
                 <ImageButton
                     android:layout_width="match_parent"
@@ -84,13 +84,6 @@
                     android:onClick="onSettingsClick"
                     android:contentDescription="Keyboard Settings"
                     app:srcCompat="@android:drawable/ic_menu_preferences" />
-
-                <ImageButton
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:contentDescription="Statistics"
-                    android:src="@android:drawable/ic_menu_info_details" />
 
             </LinearLayout>
         </com.google.android.material.bottomappbar.BottomAppBar>

@@ -11,7 +11,7 @@ import net.bosowski.models.PredictionSettingModel
 import net.bosowski.stores.PredictionSettingsStore
 
 
-class PredictionSettingsRecyclerViewAdapter(private var predictionSettings: List<PredictionSettingModel>) :
+class PredictionSettingsRecyclerViewAdapter(var predictionSettings: ArrayList<PredictionSettingModel>) :
     RecyclerView.Adapter<PredictionSettingsRecyclerViewAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
@@ -54,15 +54,16 @@ class PredictionSettingsRecyclerViewAdapter(private var predictionSettings: List
 
             binding.predictionCard.doOnTextChanged { text, start, before, count ->
                 predictionSetting.text = text.toString()
-                predictionSettingsStore.update(predictionSetting)
             }
 
             binding.deleteButton.setOnClickListener {
 //                Timber.i("Delete button clicked for ${foundPredictionSetting?.id}")
-                if (predictionSetting != null) {
-                    predictionSettingsStore.delete(predictionSetting)
-                }
-                adapter.notifyDataSetChanged()
+//                if (predictionSetting != null) {
+//                    predictionSettingsStore.delete(predictionSetting)
+//                }
+
+                adapter.notifyItemRemoved(adapterPosition)
+                adapter.predictionSettings.remove(predictionSetting)
             }
 
             binding.statusButton.setOnClickListener {

@@ -3,9 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/item_add"
-        android:icon="@android:drawable/ic_menu_add"
-        android:title="Add Prediction Setting"
+        android:id="@+id/cancel_button"
+        android:title="Cancel"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/save_button"
+        android:title="Save"
         app:showAsAction="always" />
 </menu>
 
