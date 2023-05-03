@@ -22,9 +22,12 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import io.ktor.client.request.setBody
+import kotlinx.coroutines.tasks.await
 import net.bosowski.KeyboardGPTApp
-import net.bosowski.models.PredictionSettingModel
+import net.bosowski.models.TextCommandConfigModel
 import net.bosowski.models.StatsModel
+import net.bosowski.stores.FirebaseStatsStore
+import net.bosowski.stores.FirebaseTextCommandStore
 import net.bosowski.utlis.Constants
 import net.bosowski.utlis.Observer
 
@@ -35,7 +38,6 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
     private lateinit var suggestions: Sequence<View>
 
     private lateinit var app: KeyboardGPTApp
-    private var userStats: StatsModel? = null
 
     lateinit var primaryKeyboard: LinearLayout
     lateinit var symbolsKeyboard: LinearLayout
@@ -56,9 +58,8 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
         (symbolsKeyboard.parent as ViewGroup).removeView(symbolsKeyboard)
 
         suggestions = mainView.findViewById<LinearLayout>(R.id.suggestions_layout).children
-        userStats = app.statsStore.find()
 
-        app.predictionSettingsStore.registerObserver(this)
+        FirebaseTextCommandStore.registerObserver(this)
 
         spinner = mainView.findViewById(R.id.spinner)
         onDataChanged()
@@ -67,10 +68,11 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
     }
 
     override fun onDataChanged() {
-        var predictionSettings = app.predictionSettingsStore.findAll()
+        var predictionSettings = FirebaseTextCommandStore.findAll()
         if (predictionSettings.isEmpty()) {
-            predictionSettings = listOf(PredictionSettingModel(text = "Rephrase the text")) as ArrayList<PredictionSettingModel>
-            app.predictionSettingsStore.create(predictionSettings.first())
+            predictionSettings =
+                listOf(TextCommandConfigModel(text = "Rephrase the text")) as ArrayList<TextCommandConfigModel>
+            FirebaseTextCommandStore.create(predictionSettings.first())
         }
 
         spinner.adapter = ArrayAdapter(this,
@@ -99,11 +101,13 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
     override fun onClick(v: View) {
         v as TextView
 
-        if (userStats != null) {
-            userStats!!.buttonClicks[v.tag.toString()] =
-                userStats!!.buttonClicks.getOrDefault(v.tag.toString(), 0) + 1
-            app.statsStore.set(userStats!!)
+        var userStats = FirebaseStatsStore.find()
+        if (userStats == null) {
+            userStats = StatsModel()
         }
+        userStats.buttonClicks[v.tag.toString()] =
+            userStats.buttonClicks.getOrDefault(v.tag.toString(), 0) + 1
+        FirebaseStatsStore.set(userStats)
 
         val keyboardRoot = mainView as ViewGroup
         when (v.tag) {
@@ -138,15 +142,17 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
         val client = HttpClient()
         val response =
             client.post("${Constants.CHATTERGPT_SERVER_URL}/api/ai/autocompleteRequest") {
-                bearerAuth(app.idToken ?: "")
+                val token = app.user.idToken
+                bearerAuth(token ?: "")
                 setBody("${userDefinition}, given the following:\"${allText}\"")
             }
         val choicesJson = JsonParser.parseString(response.bodyAsText()).asJsonObject.get("choices")
 
-        if(!choicesJson.isJsonNull){
+        if (choicesJson != null) {
             val choiceJsonArray = choicesJson.asJsonArray
 
-            val choices = choiceJsonArray.map { it.asJsonObject.get("text").asString.trim() }.toSet()
+            val choices =
+                choiceJsonArray.map { it.asJsonObject.get("text").asString.trim() }.toSet()
 
             suggestions.forEachIndexed { index, view ->
                 view as TextView
@@ -166,8 +172,12 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
     fun onClickSuggestion(v: View) {
         v as TextView
 
-        userStats!!.completionsUsed++
-        app.statsStore.set(userStats!!)
+        var userStats = FirebaseStatsStore.find()
+        if (userStats == null) {
+            userStats = StatsModel()
+        }
+        userStats.completionsUsed++
+        FirebaseStatsStore.set(userStats)
 
         if (v.text.isNotEmpty()) {
             replaceAllTextWith(v.text.toString())
@@ -184,12 +194,10 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
         return allText?.text?.toString() ?: ""
     }
 
-    fun ai_api_call(view: View) {
+    fun apiCall(view: View) {
         GlobalScope.launch {
             withContext(Dispatchers.Main) {
-                if (userStats != null) {
-                    updateSuggestion()
-                }
+                updateSuggestion()
             }
         }
     }

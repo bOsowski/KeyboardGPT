@@ -20,8 +20,8 @@ import com.google.firebase.ktx.Firebase
 import net.bosowski.BuildConfig
 import net.bosowski.KeyboardGPTApp
 import net.bosowski.R
-import net.bosowski.stores.FirebasePredictionSettingsStore
 import net.bosowski.stores.FirebaseStatsStore
+import net.bosowski.stores.FirebaseTextCommandStore
 
 
 class LoginActivity : AppCompatActivity() {
@@ -62,18 +62,14 @@ class LoginActivity : AppCompatActivity() {
 
     private fun updateUI(account: GoogleSignInAccount?) {
         if(account != null){
+            app.user = account
             // Got an ID token from Google. Use it to authenticate
             // with Firebase.
             val firebaseCredential = GoogleAuthProvider.getCredential(account.idToken, null)
             auth.signInWithCredential(firebaseCredential)
                 .addOnCompleteListener(this){task ->
                     if(task.isSuccessful){
-                        user = auth.currentUser!!
                         val myIntent = Intent(this, UserOverview::class.java)
-                        app.idToken = account.idToken!!
-                        app.userId = account.id!!
-                        app.statsStore = FirebaseStatsStore(app.userId)
-                        app.predictionSettingsStore = FirebasePredictionSettingsStore(app.userId)
                         startActivity(myIntent)
                     }
                 }

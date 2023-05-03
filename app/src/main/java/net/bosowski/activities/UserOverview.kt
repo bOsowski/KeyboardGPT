@@ -15,10 +15,12 @@ import io.ktor.client.statement.bodyAsText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import net.bosowski.BuildConfig.SERVER_URL
 import net.bosowski.KeyboardGPTApp
 import net.bosowski.R
+import net.bosowski.stores.FirebaseStatsStore
 import net.bosowski.utlis.Constants
 import net.bosowski.utlis.Observer
 import java.text.DecimalFormat
@@ -32,7 +34,7 @@ class UserOverview : Observer, AppCompatActivity() {
         super.onCreate(savedInstanceState)
         app = application as KeyboardGPTApp
         setContentView(R.layout.activity_user_overview)
-        app.statsStore.registerObserver(this)
+        FirebaseStatsStore.registerObserver(this) //todo: get rid of this.
     }
 
     override fun onStart() {
@@ -46,7 +48,8 @@ class UserOverview : Observer, AppCompatActivity() {
                 try {
                     val response =
                         HttpClient().get("${Constants.CHATTERGPT_SERVER_URL}/api/user/info") {
-                            bearerAuth(app.idToken ?: "")
+                            val token = app.user.idToken
+                            bearerAuth(token ?: "")
                         }
                     var availableCredits = 0f
                     if(response.bodyAsText().isNotBlank()){
@@ -65,7 +68,7 @@ class UserOverview : Observer, AppCompatActivity() {
     }
 
     override fun onDataChanged() {
-        val stats = app.statsStore.find()
+        val stats = FirebaseStatsStore.find()
         findViewById<TextView>(R.id.keystrokes).text =
             getString(R.string.total_keystrokes, stats?.buttonClicks?.map { it.value }?.sum() ?: 0)
         findViewById<TextView>(R.id.completionClicks).text =

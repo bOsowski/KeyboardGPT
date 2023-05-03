@@ -5,13 +5,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
-import net.bosowski.KeyboardGPTApp
 import net.bosowski.databinding.PredictionSettingCardBinding
-import net.bosowski.models.PredictionSettingModel
-import net.bosowski.stores.PredictionSettingsStore
+import net.bosowski.models.TextCommandConfigModel
+import net.bosowski.stores.FirebaseTextCommandStore
 
 
-class PredictionSettingsRecyclerViewAdapter(var predictionSettings: ArrayList<PredictionSettingModel>) :
+class PredictionSettingsRecyclerViewAdapter(var predictionSettings: ArrayList<TextCommandConfigModel>) :
     RecyclerView.Adapter<PredictionSettingsRecyclerViewAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
@@ -20,7 +19,6 @@ class PredictionSettingsRecyclerViewAdapter(var predictionSettings: ArrayList<Pr
 
         return MainHolder(
             binding,
-            (parent.context.applicationContext as KeyboardGPTApp).predictionSettingsStore,
             this
         )
     }
@@ -34,12 +32,11 @@ class PredictionSettingsRecyclerViewAdapter(var predictionSettings: ArrayList<Pr
 
     class MainHolder(
         private val binding: PredictionSettingCardBinding,
-        private val predictionSettingsStore: PredictionSettingsStore,
         private val adapter: PredictionSettingsRecyclerViewAdapter
     ) : RecyclerView.ViewHolder(binding.root) {
 
 
-        private fun setStatusImage(predictionSetting: PredictionSettingModel) {
+        private fun setStatusImage(predictionSetting: TextCommandConfigModel) {
             if (predictionSetting.isOn) {
                 binding.statusButton.setImageResource(R.drawable.star_big_on)
             } else {
@@ -47,7 +44,7 @@ class PredictionSettingsRecyclerViewAdapter(var predictionSettings: ArrayList<Pr
             }
         }
 
-        fun bind(predictionSetting: PredictionSettingModel) {
+        fun bind(predictionSetting: TextCommandConfigModel) {
             binding.predictionCard.setText(predictionSetting.text)
 
             setStatusImage(predictionSetting)
@@ -57,18 +54,13 @@ class PredictionSettingsRecyclerViewAdapter(var predictionSettings: ArrayList<Pr
             }
 
             binding.deleteButton.setOnClickListener {
-//                Timber.i("Delete button clicked for ${foundPredictionSetting?.id}")
-//                if (predictionSetting != null) {
-//                    predictionSettingsStore.delete(predictionSetting)
-//                }
-
                 adapter.notifyItemRemoved(adapterPosition)
                 adapter.predictionSettings.remove(predictionSetting)
             }
 
             binding.statusButton.setOnClickListener {
                 predictionSetting.isOn = !predictionSetting.isOn
-                predictionSettingsStore.update(predictionSetting)
+                FirebaseTextCommandStore.update(predictionSetting)
                 setStatusImage(predictionSetting)
             }
         }

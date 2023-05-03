@@ -1,22 +1,23 @@
 package net.bosowski
 
 import android.app.Application
-import net.bosowski.stores.FirebasePredictionSettingsStore
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.firebase.auth.FirebaseUser
+import net.bosowski.stores.FirebaseTextCommandStore
 import net.bosowski.stores.FirebaseStatsStore
-import net.bosowski.stores.PredictionSettingsStore
-import net.bosowski.stores.StatsStore
 import timber.log.Timber
 
 class KeyboardGPTApp: Application() {
 
-    var idToken: String? = null
-    lateinit var userId: String
-    lateinit var statsStore: FirebaseStatsStore
-    lateinit var predictionSettingsStore: FirebasePredictionSettingsStore
+    lateinit var user: GoogleSignInAccount
 
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
+
+        // Initialize early
+        FirebaseStatsStore
+        FirebaseTextCommandStore
     }
 
 }
