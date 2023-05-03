@@ -48,10 +48,14 @@ class UserOverview : Observer, AppCompatActivity() {
                         HttpClient().get("${Constants.CHATTERGPT_SERVER_URL}/api/user/info") {
                             bearerAuth(app.idToken ?: "")
                         }
-                    val json = JsonParser.parseString(response.bodyAsText()).asJsonObject
+                    var availableCredits = 0f
+                    if(response.bodyAsText().isNotBlank()){
+                        val json = JsonParser.parseString(response.bodyAsText()).asJsonObject
+                        availableCredits = json.get("availableCredits").asFloat
+                    }
                     val df = DecimalFormat("#.####")
                     findViewById<TextView>(R.id.availableCredits).text = getString(
-                        R.string.available_credits, df.format(json.get("availableCredits").asFloat)
+                        R.string.available_credits, df.format(availableCredits)
                     )
                 } catch (e: Exception) {
                     e.printStackTrace()
