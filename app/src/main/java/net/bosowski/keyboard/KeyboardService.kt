@@ -12,8 +12,6 @@ import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.core.view.children
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStore
 import com.google.gson.JsonParser
 import io.ktor.client.HttpClient
 import io.ktor.client.request.bearerAuth
@@ -24,13 +22,11 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import io.ktor.client.request.setBody
-import kotlinx.coroutines.tasks.await
 import net.bosowski.KeyboardGPTApp
 import net.bosowski.authentication.LoginViewModel
-import net.bosowski.models.TextCommandConfigModel
+import net.bosowski.models.PredictionSettingModel
 import net.bosowski.models.StatsModel
-import net.bosowski.stores.FirebaseStatsStore
-import net.bosowski.stores.FirebaseTextCommandStore
+import net.bosowski.stores.FirebasePredictionSettingStore
 import net.bosowski.utlis.Constants
 import net.bosowski.utlis.Observer
 
@@ -69,7 +65,7 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
 
         suggestions = mainView.findViewById<LinearLayout>(R.id.suggestions_layout).children
 
-        FirebaseTextCommandStore.registerObserver(this)
+        FirebasePredictionSettingStore.registerObserver(this)
 
         spinner = mainView.findViewById(R.id.spinner)
         onDataChanged()
@@ -78,11 +74,11 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
     }
 
     override fun onDataChanged() {
-        var predictionSettings = FirebaseTextCommandStore.findAll()
+        var predictionSettings = FirebasePredictionSettingStore.findAll()
         if (predictionSettings.isEmpty()) {
             predictionSettings =
-                arrayListOf(TextCommandConfigModel(text = "Rephrase the text"))
-            FirebaseTextCommandStore.create(predictionSettings.first())
+                arrayListOf(PredictionSettingModel(text = "Rephrase the text"))
+            FirebasePredictionSettingStore.create(predictionSettings.first())
         }
 
         spinner.adapter = ArrayAdapter(this,

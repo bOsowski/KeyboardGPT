@@ -3,11 +3,8 @@ package net.bosowski
 import android.app.Application
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.firebase.auth.FirebaseUser
 import net.bosowski.authentication.LoginViewModel
-import net.bosowski.stores.FirebaseTextCommandStore
-import net.bosowski.stores.FirebaseStatsStore
+import net.bosowski.stores.FirebasePredictionSettingStore
 import timber.log.Timber
 
 class KeyboardGPTApp: Application() {
@@ -20,7 +17,7 @@ class KeyboardGPTApp: Application() {
         Timber.plant(Timber.DebugTree())
 
         // Initialize early
-        FirebaseTextCommandStore
+        FirebasePredictionSettingStore
     }
 
     fun getViewModelProvider(): ViewModelProvider {

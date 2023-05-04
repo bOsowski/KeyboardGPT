@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import net.bosowski.databinding.PredictionSettingCardBinding
-import net.bosowski.models.TextCommandConfigModel
-import net.bosowski.stores.FirebaseTextCommandStore
+import net.bosowski.models.PredictionSettingModel
+import net.bosowski.stores.FirebasePredictionSettingStore
 
 
-class PredictionSettingsRecyclerViewAdapter(var predictionSettings: ArrayList<TextCommandConfigModel>) :
+class PredictionSettingsRecyclerViewAdapter(var predictionSettings: ArrayList<PredictionSettingModel>) :
     RecyclerView.Adapter<PredictionSettingsRecyclerViewAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
@@ -36,7 +36,7 @@ class PredictionSettingsRecyclerViewAdapter(var predictionSettings: ArrayList<Te
     ) : RecyclerView.ViewHolder(binding.root) {
 
 
-        private fun setStatusImage(predictionSetting: TextCommandConfigModel) {
+        private fun setStatusImage(predictionSetting: PredictionSettingModel) {
             if (predictionSetting.isOn) {
                 binding.statusButton.setImageResource(R.drawable.star_big_on)
             } else {
@@ -44,7 +44,7 @@ class PredictionSettingsRecyclerViewAdapter(var predictionSettings: ArrayList<Te
             }
         }
 
-        fun bind(predictionSetting: TextCommandConfigModel) {
+        fun bind(predictionSetting: PredictionSettingModel) {
             binding.predictionCard.setText(predictionSetting.text)
 
             setStatusImage(predictionSetting)
@@ -60,7 +60,7 @@ class PredictionSettingsRecyclerViewAdapter(var predictionSettings: ArrayList<Te
 
             binding.statusButton.setOnClickListener {
                 predictionSetting.isOn = !predictionSetting.isOn
-                FirebaseTextCommandStore.update(predictionSetting)
+                FirebasePredictionSettingStore.update(predictionSetting)
                 setStatusImage(predictionSetting)
             }
         }

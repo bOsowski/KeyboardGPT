@@ -1,6 +1,6 @@
 package net.bosowski.models
 
-data class TextCommandConfigModel(
+data class PredictionSettingModel(
     var id: String = "",
     var userId: String = "",
     var text: String = "Rephrase the text",

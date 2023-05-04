@@ -8,8 +8,8 @@ import net.bosowski.KeyboardGPTApp
 import net.bosowski.R
 import net.bosowski.adapters.PredictionSettingsRecyclerViewAdapter
 import net.bosowski.databinding.PredictionSettingsListBinding
-import net.bosowski.models.TextCommandConfigModel
-import net.bosowski.stores.FirebaseTextCommandStore
+import net.bosowski.models.PredictionSettingModel
+import net.bosowski.stores.FirebasePredictionSettingStore
 
 class PredictionSettingsListActivity: AppCompatActivity(){
 
@@ -18,7 +18,7 @@ class PredictionSettingsListActivity: AppCompatActivity(){
 
     private lateinit var adapter: PredictionSettingsRecyclerViewAdapter
 
-    private val currentPredictionSettings = ArrayList<TextCommandConfigModel>()
+    private val currentPredictionSettings = ArrayList<PredictionSettingModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,12 +31,12 @@ class PredictionSettingsListActivity: AppCompatActivity(){
         val layoutManager = LinearLayoutManager(this)
         binding.settingsRecyclerView.layoutManager = layoutManager
 
-        currentPredictionSettings.addAll(FirebaseTextCommandStore.findAll())
+        currentPredictionSettings.addAll(FirebasePredictionSettingStore.findAll())
         adapter = PredictionSettingsRecyclerViewAdapter(currentPredictionSettings)
         binding.settingsRecyclerView.adapter = adapter
 
         binding.floatingActionButton.setOnClickListener{ view ->
-            val predictionSetting = TextCommandConfigModel(text = "Rephrase the text")
+            val predictionSetting = PredictionSettingModel(text = "Rephrase the text")
             currentPredictionSettings.add(predictionSetting)
             adapter.notifyItemInserted(adapter.itemCount - 1)
         }
@@ -46,16 +46,16 @@ class PredictionSettingsListActivity: AppCompatActivity(){
         menuInflater.inflate(R.menu.menu_prediction_settings, menu)
 
         menu!!.findItem(R.id.save_button).setOnMenuItemClickListener { item ->
-            FirebaseTextCommandStore.deleteAll()
+            FirebasePredictionSettingStore.deleteAll()
             currentPredictionSettings.forEach {
-                FirebaseTextCommandStore.create(it)
+                FirebasePredictionSettingStore.create(it)
             }
             finish()
             true
         }
         menu.findItem(R.id.cancel_button).setOnMenuItemClickListener { item ->
             currentPredictionSettings.clear()
-            currentPredictionSettings.addAll(FirebaseTextCommandStore.findAll())
+            currentPredictionSettings.addAll(FirebasePredictionSettingStore.findAll())
             finish()
             true
         }

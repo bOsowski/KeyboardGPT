@@ -4,17 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import net.bosowski.models.StatsModel
-import net.bosowski.models.TextCommandConfigModel
+import net.bosowski.models.PredictionSettingModel
 
 class KeyboardViewModel : ViewModel() {
 
-    private val _textCommands = MutableLiveData<List<TextCommandConfigModel>>()
-    val textCommands: LiveData<List<TextCommandConfigModel>> = _textCommands
+    private val _textCommands = MutableLiveData<List<PredictionSettingModel>>()
+    val textCommands: LiveData<List<PredictionSettingModel>> = _textCommands
 
     private val _statsModel = MutableLiveData<StatsModel>()
     val statsModel: LiveData<StatsModel> = _statsModel
 
-    fun setTextCommands(textCommands: List<TextCommandConfigModel>) {
+    fun setTextCommands(textCommands: List<PredictionSettingModel>) {
         _textCommands.value = textCommands
     }
 

@@ -8,22 +8,22 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import net.bosowski.utlis.AbstractObserverNotifier
-import net.bosowski.models.TextCommandConfigModel
+import net.bosowski.models.PredictionSettingModel
 import timber.log.Timber
 
-object FirebaseTextCommandStore : TextCommandStore, AbstractObserverNotifier() {
+object FirebasePredictionSettingStore : PredictionSettingStore, AbstractObserverNotifier() {
 
     private val database: DatabaseReference =
         FirebaseDatabase.getInstance("https://chattergpt-default-rtdb.europe-west1.firebasedatabase.app/").reference
 
-    private var predictionSettings: ArrayList<TextCommandConfigModel> = ArrayList()
+    private var predictionSettings: ArrayList<PredictionSettingModel> = ArrayList()
 
     private val postListener = object : ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             if (dataSnapshot.exists()) {
                 val currentData = dataSnapshot.children.mapNotNull {
-                    it.getValue(TextCommandConfigModel::class.java)
-                } as ArrayList<TextCommandConfigModel>
+                    it.getValue(PredictionSettingModel::class.java)
+                } as ArrayList<PredictionSettingModel>
                 predictionSettings.clear()
                 predictionSettings.addAll(currentData)
                 Timber.i("Firebase Success : StatsModel Added")
@@ -44,27 +44,27 @@ object FirebaseTextCommandStore : TextCommandStore, AbstractObserverNotifier() {
         }
     }
 
-    override fun create(textCommandConfigModel: TextCommandConfigModel) {
+    override fun create(predictionSettingModel: PredictionSettingModel) {
         val key = database.child("prediction_settings").push().key
         if (key == null) {
             Timber.i("Firebase Error : Key Empty")
             return
         }
-        textCommandConfigModel.id = key
-        predictionSettings.add(textCommandConfigModel)
+        predictionSettingModel.id = key
+        predictionSettings.add(predictionSettingModel)
         database.child("prediction_settings").child(Firebase.auth.uid!!).child(key)
-            .setValue(textCommandConfigModel)
+            .setValue(predictionSettingModel)
     }
 
-    override fun update(textCommandConfigModel: TextCommandConfigModel) {
-        database.child("prediction_settings").child(textCommandConfigModel.userId)
-            .child(textCommandConfigModel.id).setValue(textCommandConfigModel)
+    override fun update(predictionSettingModel: PredictionSettingModel) {
+        database.child("prediction_settings").child(predictionSettingModel.userId)
+            .child(predictionSettingModel.id).setValue(predictionSettingModel)
     }
 
-    override fun delete(textCommandConfigModel: TextCommandConfigModel) {
-        predictionSettings.remove(textCommandConfigModel)
-        database.child("prediction_settings").child(textCommandConfigModel.userId)
-            .child(textCommandConfigModel.id).removeValue()
+    override fun delete(predictionSettingModel: PredictionSettingModel) {
+        predictionSettings.remove(predictionSettingModel)
+        database.child("prediction_settings").child(predictionSettingModel.userId)
+            .child(predictionSettingModel.id).removeValue()
     }
 
     override fun deleteAll() {
@@ -72,11 +72,11 @@ object FirebaseTextCommandStore : TextCommandStore, AbstractObserverNotifier() {
         database.child("prediction_settings").child(Firebase.auth.uid!!).removeValue()
     }
 
-    override fun findAll(): ArrayList<TextCommandConfigModel> {
+    override fun findAll(): ArrayList<PredictionSettingModel> {
         return predictionSettings
     }
 
-    override fun find(id: String): TextCommandConfigModel? {
+    override fun find(id: String): PredictionSettingModel? {
         return predictionSettings.find { it.id == id }
     }
 
