@@ -15,9 +15,6 @@
         android:theme="@style/Theme.KeyboardGPT"
         tools:targetApi="31">
         <activity
-            android:name=".activities.UserOverview"
-            android:exported="false" />
-        <activity
             android:name=".activities.PredictionSettingsListActivity"
             android:exported="true" />
         <activity

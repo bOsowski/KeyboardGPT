@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -16,12 +15,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.tasks.Task
 import net.bosowski.BuildConfig
+import net.bosowski.KeyboardGPTApp
 import net.bosowski.R
 import net.bosowski.databinding.FragmentLoginBinding
 import net.bosowski.overview.UserOverviewFragment
 
 class LoginFragment : Fragment() {
 
+    lateinit var app: KeyboardGPTApp
     private lateinit var googleSignInClient: GoogleSignInClient
 
     private lateinit var loginViewModel: LoginViewModel
@@ -37,9 +38,9 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        app = requireActivity().application as KeyboardGPTApp
 
-        val parentActivity = requireActivity()
-        loginViewModel = ViewModelProvider(parentActivity).get(LoginViewModel::class.java)
+        loginViewModel = app.getLoginViewModel()
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(BuildConfig.CLIENT_ID)

@@ -21,9 +21,6 @@ class UserOverviewViewModel: ViewModel() {
     private val _availableCredits = MutableLiveData<String>()
     val availableCredits: LiveData<String> get() = _availableCredits
 
-    private val _stats = MutableLiveData<StatsModel?>()
-    val stats: LiveData<StatsModel?> get() = _stats
-
     fun fetchUserData(idToken: String?) {
         viewModelScope.launch {
             withContext(Dispatchers.Main) {
@@ -46,7 +43,4 @@ class UserOverviewViewModel: ViewModel() {
         }
     }
 
-    fun updateStats(stats: StatsModel?) {
-        _stats.value = stats
-    }
 }

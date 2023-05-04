@@ -15,14 +15,27 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import net.bosowski.BuildConfig.SERVER_URL
+import net.bosowski.KeyboardGPTApp
 import net.bosowski.R
 import net.bosowski.authentication.LoginViewModel
+import net.bosowski.stores.FirebaseStatsStore
+import net.bosowski.userStats.StatsViewModel
 
 class UserOverviewFragment : Fragment() {
 
+    private lateinit var app: KeyboardGPTApp
     private lateinit var binding: FragmentUserOverviewBinding
+
     private val userOverviewViewModel: UserOverviewViewModel by viewModels()
     private lateinit var loginViewModel: LoginViewModel
+    private lateinit var statsViewModel: StatsViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?){
+        super.onCreate(savedInstanceState)
+
+        statsViewModel = ViewModelProvider(requireActivity())[StatsViewModel::class.java]
+        FirebaseStatsStore(statsViewModel)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,13 +50,14 @@ class UserOverviewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loginViewModel = ViewModelProvider(requireActivity())[LoginViewModel::class.java]
+        app = requireActivity().application as KeyboardGPTApp
+        loginViewModel = app.getLoginViewModel()
 
         userOverviewViewModel.availableCredits.observe(viewLifecycleOwner, Observer { credits ->
             binding.availableCredits.text = getString(R.string.available_credits, credits)
         })
 
-        userOverviewViewModel.stats.observe(viewLifecycleOwner, Observer { stats ->
+        statsViewModel.statsModel.observe(viewLifecycleOwner, Observer { stats ->
             binding.keystrokes.text =
                 getString(R.string.total_keystrokes, stats?.buttonClicks?.map { it.value }?.sum() ?: 0)
             binding.completionClicks.text =

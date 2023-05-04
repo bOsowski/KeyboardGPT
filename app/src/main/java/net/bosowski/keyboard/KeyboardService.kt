@@ -12,6 +12,8 @@ import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.core.view.children
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStore
 import com.google.gson.JsonParser
 import io.ktor.client.HttpClient
 import io.ktor.client.request.bearerAuth
@@ -24,6 +26,7 @@ import kotlinx.coroutines.withContext
 import io.ktor.client.request.setBody
 import kotlinx.coroutines.tasks.await
 import net.bosowski.KeyboardGPTApp
+import net.bosowski.authentication.LoginViewModel
 import net.bosowski.models.TextCommandConfigModel
 import net.bosowski.models.StatsModel
 import net.bosowski.stores.FirebaseStatsStore
@@ -37,16 +40,23 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
     private lateinit var mainView: View
     private lateinit var suggestions: Sequence<View>
 
+    private lateinit var keyboardViewModel: KeyboardViewModel
+    private lateinit var loginViewModel: LoginViewModel
+
     private lateinit var app: KeyboardGPTApp
 
     lateinit var primaryKeyboard: LinearLayout
     lateinit var symbolsKeyboard: LinearLayout
     lateinit var spinner: Spinner
 
+
     @Override
     override fun onCreateInputView(): View {
         app = application as KeyboardGPTApp
         mainView = layoutInflater.inflate(R.layout.keyboard_view_primary_english, null)
+
+        keyboardViewModel = app.getViewModelProvider()[KeyboardViewModel::class.java]
+        loginViewModel = app.getLoginViewModel()
 
         primaryKeyboard = (layoutInflater.inflate(
             R.layout.keyboard_view_primary_english, null
@@ -71,7 +81,7 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
         var predictionSettings = FirebaseTextCommandStore.findAll()
         if (predictionSettings.isEmpty()) {
             predictionSettings =
-                listOf(TextCommandConfigModel(text = "Rephrase the text")) as ArrayList<TextCommandConfigModel>
+                arrayListOf(TextCommandConfigModel(text = "Rephrase the text"))
             FirebaseTextCommandStore.create(predictionSettings.first())
         }
 
@@ -101,13 +111,13 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
     override fun onClick(v: View) {
         v as TextView
 
-        var userStats = FirebaseStatsStore.find()
+        var userStats = keyboardViewModel.statsModel.value
         if (userStats == null) {
             userStats = StatsModel()
         }
         userStats.buttonClicks[v.tag.toString()] =
             userStats.buttonClicks.getOrDefault(v.tag.toString(), 0) + 1
-        FirebaseStatsStore.set(userStats)
+        keyboardViewModel.setStatsModel(userStats)
 
         val keyboardRoot = mainView as ViewGroup
         when (v.tag) {
@@ -142,8 +152,7 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
         val client = HttpClient()
         val response =
             client.post("${Constants.CHATTERGPT_SERVER_URL}/api/ai/autocompleteRequest") {
-                val token = app.user.idToken
-                bearerAuth(token ?: "")
+                bearerAuth(loginViewModel.idToken.value ?: "")
                 setBody("${userDefinition}, given the following:\"${allText}\"")
             }
         val choicesJson = JsonParser.parseString(response.bodyAsText()).asJsonObject.get("choices")
@@ -165,19 +174,18 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
                 }
             }
         }
-
     }
 
     // Called by the suggestion buttons.
     fun onClickSuggestion(v: View) {
         v as TextView
 
-        var userStats = FirebaseStatsStore.find()
+        var userStats = keyboardViewModel.statsModel.value
         if (userStats == null) {
             userStats = StatsModel()
         }
         userStats.completionsUsed++
-        FirebaseStatsStore.set(userStats)
+        keyboardViewModel.setStatsModel(userStats)
 
         if (v.text.isNotEmpty()) {
             replaceAllTextWith(v.text.toString())
