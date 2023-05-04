@@ -27,6 +27,7 @@ import net.bosowski.authentication.LoginViewModel
 import net.bosowski.models.PredictionSettingModel
 import net.bosowski.models.StatsModel
 import net.bosowski.stores.FirebasePredictionSettingStore
+import net.bosowski.userStats.StatsViewModel
 import net.bosowski.utlis.Constants
 import net.bosowski.utlis.Observer
 
@@ -36,7 +37,7 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
     private lateinit var mainView: View
     private lateinit var suggestions: Sequence<View>
 
-    private lateinit var keyboardViewModel: KeyboardViewModel
+    private lateinit var statsViewModel: StatsViewModel
     private lateinit var loginViewModel: LoginViewModel
 
     private lateinit var app: KeyboardGPTApp
@@ -51,7 +52,7 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
         app = application as KeyboardGPTApp
         mainView = layoutInflater.inflate(R.layout.keyboard_view_primary_english, null)
 
-        keyboardViewModel = app.getViewModelProvider()[KeyboardViewModel::class.java]
+        statsViewModel = app.getStatsViewModel()
         loginViewModel = app.getLoginViewModel()
 
         primaryKeyboard = (layoutInflater.inflate(
@@ -107,13 +108,7 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
     override fun onClick(v: View) {
         v as TextView
 
-        var userStats = keyboardViewModel.statsModel.value
-        if (userStats == null) {
-            userStats = StatsModel()
-        }
-        userStats.buttonClicks[v.tag.toString()] =
-            userStats.buttonClicks.getOrDefault(v.tag.toString(), 0) + 1
-        keyboardViewModel.setStatsModel(userStats)
+        statsViewModel.incrementKeyStrokes(v.tag.toString())
 
         val keyboardRoot = mainView as ViewGroup
         when (v.tag) {
@@ -176,12 +171,7 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
     fun onClickSuggestion(v: View) {
         v as TextView
 
-        var userStats = keyboardViewModel.statsModel.value
-        if (userStats == null) {
-            userStats = StatsModel()
-        }
-        userStats.completionsUsed++
-        keyboardViewModel.setStatsModel(userStats)
+        statsViewModel.incrementCompletions()
 
         if (v.text.isNotEmpty()) {
             replaceAllTextWith(v.text.toString())
