@@ -50,7 +50,7 @@ class FirebaseStatsStore(private val statsViewModel: StatsViewModel) : StatsStor
             return
         }
         statsModel.id = key
-        database.child("stats").child(statsModel.userId).setValue(statsModel)
+        database.child("stats").child(Firebase.auth.currentUser!!.uid).setValue(statsModel)
     }
 
     override fun find(): StatsModel? {

@@ -32,9 +32,9 @@ class UserOverviewFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
-
-        statsViewModel = ViewModelProvider(requireActivity())[StatsViewModel::class.java]
-        FirebaseStatsStore(statsViewModel)
+        app = requireActivity().application as KeyboardGPTApp
+        statsViewModel = app.getStatsViewModel()
+        loginViewModel = app.getLoginViewModel()
     }
 
     override fun onCreateView(
@@ -50,8 +50,6 @@ class UserOverviewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        app = requireActivity().application as KeyboardGPTApp
-        loginViewModel = app.getLoginViewModel()
 
         userOverviewViewModel.availableCredits.observe(viewLifecycleOwner, Observer { credits ->
             binding.availableCredits.text = getString(R.string.available_credits, credits)

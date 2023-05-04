@@ -85,4 +85,24 @@ class LoginFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    override fun onResume() {
+        super.onResume()
+        refreshToken()
+    }
+
+    private fun refreshToken() {
+        val signInTask = googleSignInClient.silentSignIn()
+        signInTask.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val account = task.result
+                val idToken = account?.idToken
+                if (idToken != null) {
+                    loginViewModel.setIdToken(idToken)
+                }
+            } else {
+                // Handle failure, e.g., prompt user to sign in again
+            }
+        }
+    }
 }

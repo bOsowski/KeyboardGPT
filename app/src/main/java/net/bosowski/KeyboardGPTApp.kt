@@ -5,11 +5,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import net.bosowski.authentication.LoginViewModel
 import net.bosowski.stores.FirebasePredictionSettingStore
+import net.bosowski.userStats.StatsViewModel
 import timber.log.Timber
 
 class KeyboardGPTApp: Application() {
 
-//    lateinit var user: GoogleSignInAccount
     private lateinit var viewModelProvider: ViewModelProvider
 
     override fun onCreate() {
@@ -29,6 +29,10 @@ class KeyboardGPTApp: Application() {
 
     fun getLoginViewModel(): LoginViewModel {
         return getViewModelProvider()[LoginViewModel::class.java]
+    }
+
+    fun getStatsViewModel(): StatsViewModel {
+        return getViewModelProvider()[StatsViewModel::class.java]
     }
 
 }

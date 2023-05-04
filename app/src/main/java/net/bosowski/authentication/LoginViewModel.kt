@@ -22,6 +22,10 @@ class LoginViewModel : ViewModel() {
     val idToken: LiveData<String>
         get() = _idToken
 
+    fun setIdToken(idToken: String) {
+        _idToken.value = idToken
+    }
+
     fun handleSignInResult(task: Task<GoogleSignInAccount>) {
         try {
             val account = task.getResult(ApiException::class.java)
