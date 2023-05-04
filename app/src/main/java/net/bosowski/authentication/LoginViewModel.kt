@@ -14,33 +14,28 @@ class LoginViewModel : ViewModel() {
 
     private val firebaseAuth = FirebaseAuth.getInstance()
 
-    private val _loginStatus = MutableLiveData<LoginStatus>()
-    val loginStatus: LiveData<LoginStatus>
+    private val _loginStatus = MutableLiveData<Boolean>()
+    val loginStatus: LiveData<Boolean>
         get() = _loginStatus
+
+    private val _idToken = MutableLiveData<String>()
+    val idToken: LiveData<String>
+        get() = _idToken
 
     fun handleSignInResult(task: Task<GoogleSignInAccount>) {
         try {
             val account = task.getResult(ApiException::class.java)
-            firebaseAuthWithGoogle(account!!)
+            _idToken.value = account.idToken
+            firebaseAuthWithGoogle(account)
         } catch (e: ApiException) {
-            _loginStatus.value = LoginStatus.Error(e.statusCode)
+            _loginStatus.value = false
         }
     }
 
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val user = firebaseAuth.currentUser
-                _loginStatus.value = LoginStatus.Success(user)
-            } else {
-                _loginStatus.value = LoginStatus.Error(null)
-            }
+            _loginStatus.value = task.isSuccessful
         }
-    }
-
-    sealed class LoginStatus {
-        data class Success(val user: FirebaseUser?) : LoginStatus()
-        data class Error(val statusCode: Int?) : LoginStatus()
     }
 }

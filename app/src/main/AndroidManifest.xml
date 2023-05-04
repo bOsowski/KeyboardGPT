@@ -24,7 +24,7 @@
             android:name=".adapters.PredictionSettingsRecyclerViewAdapter"
             android:exported="true" />
         <activity
-            android:name=".activities.LoginActivity"
+            android:name=".activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
