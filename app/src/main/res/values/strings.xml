@@ -6,4 +6,5 @@
     <string name="words_typed">Words Typed: %1$d</string>
     <string name="completion_clicks">Completion Clicks: %1$d</string>
     <string name="login_register">Login / Register</string>
+    <string name="app_logo">App Logo</string>
 </resources>
