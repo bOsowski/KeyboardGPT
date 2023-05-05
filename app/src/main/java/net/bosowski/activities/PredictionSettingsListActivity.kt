@@ -3,13 +3,17 @@ package net.bosowski.activities
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import net.bosowski.KeyboardGPTApp
 import net.bosowski.R
 import net.bosowski.adapters.PredictionSettingsRecyclerViewAdapter
 import net.bosowski.databinding.PredictionSettingsListBinding
 import net.bosowski.models.PredictionSettingModel
 import net.bosowski.stores.FirebasePredictionSettingStore
+import net.bosowski.utlis.SwipeToDeleteCallback
 
 class PredictionSettingsListActivity: AppCompatActivity(){
 
@@ -40,6 +44,16 @@ class PredictionSettingsListActivity: AppCompatActivity(){
             currentPredictionSettings.add(predictionSetting)
             adapter.notifyItemInserted(adapter.itemCount - 1)
         }
+
+        val swipeDeleteHandler = object : SwipeToDeleteCallback(this) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = binding.settingsRecyclerView.adapter as PredictionSettingsRecyclerViewAdapter
+                adapter.removeAt(viewHolder.adapterPosition)
+
+            }
+        }
+        val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
+        itemTouchDeleteHelper.attachToRecyclerView(binding.settingsRecyclerView)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

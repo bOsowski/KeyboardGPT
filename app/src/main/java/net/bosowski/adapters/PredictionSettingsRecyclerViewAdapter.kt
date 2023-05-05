@@ -30,6 +30,11 @@ class PredictionSettingsRecyclerViewAdapter(var predictionSettings: ArrayList<Pr
         holder.bind(predictionSetting)
     }
 
+    fun removeAt(position: Int) {
+        predictionSettings.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
     class MainHolder(
         private val binding: PredictionSettingCardBinding,
         private val adapter: PredictionSettingsRecyclerViewAdapter
