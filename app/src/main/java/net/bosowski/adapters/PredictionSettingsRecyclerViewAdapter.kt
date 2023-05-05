@@ -37,11 +37,12 @@ class PredictionSettingsRecyclerViewAdapter(var predictionSettings: ArrayList<Pr
 
 
         private fun setStatusImage(predictionSetting: PredictionSettingModel) {
-            if (predictionSetting.isOn) {
-                binding.statusButton.setImageResource(R.drawable.star_big_on)
-            } else {
-                binding.statusButton.setImageResource(R.drawable.star_big_off)
-            }
+            // todo: fix this
+//            if (predictionSetting.isOn) {
+//                binding.statusButton.setImageResource(R.drawable.star_big_on)
+//            } else {
+//                binding.statusButton.setImageResource(R.drawable.star_big_off)
+//            }
         }
 
         fun bind(predictionSetting: PredictionSettingModel) {
@@ -53,16 +54,17 @@ class PredictionSettingsRecyclerViewAdapter(var predictionSettings: ArrayList<Pr
                 predictionSetting.text = text.toString()
             }
 
-            binding.deleteButton.setOnClickListener {
-                adapter.notifyItemRemoved(adapterPosition)
-                adapter.predictionSettings.remove(predictionSetting)
-            }
-
-            binding.statusButton.setOnClickListener {
-                predictionSetting.isOn = !predictionSetting.isOn
-                FirebasePredictionSettingStore.update(predictionSetting)
-                setStatusImage(predictionSetting)
-            }
+            // todo: fix this
+//            binding.deleteButton.setOnClickListener {
+//                adapter.notifyItemRemoved(adapterPosition)
+//                adapter.predictionSettings.remove(predictionSetting)
+//            }
+//
+//            binding.statusButton.setOnClickListener {
+//                predictionSetting.isOn = !predictionSetting.isOn
+//                FirebasePredictionSettingStore.update(predictionSetting)
+//                setStatusImage(predictionSetting)
+//            }
         }
     }
 

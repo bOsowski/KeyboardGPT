@@ -36,7 +36,7 @@ class PredictionSettingsListActivity: AppCompatActivity(){
         binding.settingsRecyclerView.adapter = adapter
 
         binding.floatingActionButton.setOnClickListener{ view ->
-            val predictionSetting = PredictionSettingModel(text = "Rephrase the text")
+            val predictionSetting = PredictionSettingModel()
             currentPredictionSettings.add(predictionSetting)
             adapter.notifyItemInserted(adapter.itemCount - 1)
         }
