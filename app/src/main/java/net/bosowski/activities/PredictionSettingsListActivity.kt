@@ -47,9 +47,7 @@ class PredictionSettingsListActivity: AppCompatActivity(){
 
         val swipeDeleteHandler = object : SwipeToDeleteCallback(this) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val adapter = binding.settingsRecyclerView.adapter as PredictionSettingsRecyclerViewAdapter
                 adapter.removeAt(viewHolder.adapterPosition)
-
             }
         }
         val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)

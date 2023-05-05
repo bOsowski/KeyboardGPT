@@ -84,7 +84,7 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
 
         spinner.adapter = ArrayAdapter(this,
             android.R.layout.simple_spinner_item,
-            predictionSettings.filter { it.isOn }.map { it.text })
+            predictionSettings.map { it.text })
     }
 
     /**
