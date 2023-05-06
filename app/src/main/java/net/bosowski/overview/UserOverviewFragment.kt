@@ -66,11 +66,11 @@ class UserOverviewFragment : Fragment() {
         binding.buyCredits.setOnClickListener {
             buyCredits()
         }
+    }
 
-        loginViewModel.idToken.observe(viewLifecycleOwner) { token: String ->
-            userOverviewViewModel.fetchUserData(token)
-        }
-
+    override fun onResume() {
+        super.onResume()
+        userOverviewViewModel.fetchUserData(loginViewModel.idToken.value)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
