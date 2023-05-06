@@ -5,4 +5,7 @@
     <string name="total_keystrokes">Total Keystrokes: %1$d</string>
     <string name="words_typed">Words Typed: %1$d</string>
     <string name="completion_clicks">Completion Clicks: %1$d</string>
+    <string name="login_register">Login / Register</string>
+    <string name="app_logo">App Logo</string>
+    <string name="text_transform_instruction">Text Transform Instruction</string>
 </resources>

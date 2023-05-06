@@ -1,16 +1,16 @@
-package net.bosowski.stores
+package net.bosowski.userStats
 
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
-import net.bosowski.utlis.AbstractObserverNotifier
-import net.bosowski.models.StatsModel
+import com.google.firebase.ktx.Firebase
 import timber.log.Timber
 
-class FirebaseStatsStore(private val userId: String) : StatsStore, AbstractObserverNotifier() {
+class FirebaseStatsStore(private val statsViewModel: StatsViewModel) : StatsStore {
 
     private val database: DatabaseReference =
         FirebaseDatabase.getInstance("https://chattergpt-default-rtdb.europe-west1.firebasedatabase.app/").reference
@@ -20,15 +20,10 @@ class FirebaseStatsStore(private val userId: String) : StatsStore, AbstractObser
     private val postListener = object : ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             // Get Post object and use the values to update the UI
-            if (dataSnapshot.exists()) {
-                statsModel = dataSnapshot.getValue<StatsModel>()!!
-            }
-            else{
-                statsModel = StatsModel(userId = userId)
-            }
+            statsModel = dataSnapshot.getValue<StatsModel>()
 
-            Timber.i("Firebase Success : StatsModel Added")
-            observers.forEach { it.onDataChanged() }
+            Timber.i("Firebase Success : StatsModel Loaded")
+            statsViewModel.setStatsModel(statsModel)
         }
 
         override fun onCancelled(databaseError: DatabaseError) {
@@ -38,7 +33,11 @@ class FirebaseStatsStore(private val userId: String) : StatsStore, AbstractObser
     }
 
     init {
-        database.child("stats").child(userId).addValueEventListener(postListener)
+        Firebase.auth.addAuthStateListener {
+            if (it.currentUser != null) {
+                database.child("stats").child(it.currentUser!!.uid).addValueEventListener(postListener)
+            }
+        }
     }
 
     override fun set(statsModel: StatsModel) {
@@ -48,11 +47,10 @@ class FirebaseStatsStore(private val userId: String) : StatsStore, AbstractObser
             return
         }
         statsModel.id = key
-        database.child("stats").child(statsModel.userId).setValue(statsModel)
+        database.child("stats").child(Firebase.auth.currentUser!!.uid).setValue(statsModel)
     }
 
     override fun find(): StatsModel? {
         return statsModel
     }
-
 }

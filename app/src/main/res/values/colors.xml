@@ -7,4 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="keyboard_background">#AECDD6</color>
+    <color name="button_normal_background">#F5FCFB</color>
+    <color name="button_special_background">#9AA0FC</color>
+    <color name="predictions_choices_background">#FFFFFFFF</color>
+    <color name="predictions_settings_background">#FFFFFFFF</color>
 </resources>

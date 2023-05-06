@@ -15,16 +15,13 @@
         android:theme="@style/Theme.KeyboardGPT"
         tools:targetApi="31">
         <activity
-            android:name=".activities.UserOverview"
-            android:exported="false" />
-        <activity
-            android:name=".activities.PredictionSettingsListActivity"
+            android:name=".predictionSettings.PredictionSettingsListActivity"
             android:exported="true" />
         <activity
-            android:name=".adapters.PredictionSettingsRecyclerViewAdapter"
+            android:name=".predictionSettings.PredictionSettingsRecyclerViewAdapter"
             android:exported="true" />
         <activity
-            android:name=".activities.LoginActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,7 +31,7 @@
         </activity>
 
         <service
-            android:name=".keyboard.KeyboardService"
+            android:name=".KeyboardService"
             android:exported="true"
             android:label="KeyboardGPT"
             android:permission="android.permission.BIND_INPUT_METHOD">

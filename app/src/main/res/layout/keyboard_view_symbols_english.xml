@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
-    tools:context=".keyboard.KeyboardService">
+    tools:context=".KeyboardService">
 
     <LinearLayout
         android:id="@+id/keyboard"
@@ -25,7 +25,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/num_one"
+                android:backgroundTint="@color/button_normal_background"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -39,7 +39,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/num_two"
+                android:backgroundTint="@color/button_normal_background"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -52,7 +52,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
-                android:id="@+id/num_three"
+                android:backgroundTint="@color/button_normal_background"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -65,6 +65,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/num_four"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -78,6 +79,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/num_five"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -91,6 +93,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/num_six"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -104,6 +107,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/num_seven"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -117,6 +121,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/num_eight"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -130,6 +135,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/num_nine"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -143,6 +149,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/num_zero"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -165,6 +172,7 @@
             android:orientation="horizontal">
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/dash"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -178,6 +186,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/forward_slash"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -191,6 +200,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/colon"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -204,6 +214,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/semicolon"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -217,6 +228,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/open_bracket"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -230,6 +242,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/close_bracket"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -243,6 +256,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/euro_sign"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -256,6 +270,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/and_symbol"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -269,6 +284,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/at_symbol"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -282,6 +298,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/double_quote"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -304,6 +321,7 @@
             android:orientation="horizontal">
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -314,6 +332,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/star_sign"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -327,6 +346,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/plus_sign"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -340,6 +360,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/hashtag"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -353,6 +374,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/percent"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -366,6 +388,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/single_quote"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -379,6 +402,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/exclamation_mark"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -392,6 +416,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/question_mark"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -405,6 +430,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_special_background"
                 android:id="@+id/DEL"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -426,6 +452,7 @@
             android:orientation="horizontal">
 
             <Button
+                android:backgroundTint="@color/button_special_background"
                 android:id="@+id/PRIMARY"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -437,6 +464,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/comma"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -448,6 +476,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/SPACE"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -459,6 +488,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_normal_background"
                 android:id="@+id/period"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -470,6 +500,7 @@
                 app:autoSizeTextType="uniform" />
 
             <Button
+                android:backgroundTint="@color/button_special_background"
                 android:id="@+id/enter"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
