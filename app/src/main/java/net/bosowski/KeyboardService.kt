@@ -1,4 +1,4 @@
-package net.bosowski.keyboard
+package net.bosowski
 
 import android.inputmethodservice.InputMethodService
 import android.view.KeyEvent
@@ -6,12 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.ExtractedTextRequest
 import android.widget.ArrayAdapter
-import net.bosowski.R
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.core.view.children
+import androidx.lifecycle.Observer
 import com.google.gson.JsonParser
 import io.ktor.client.HttpClient
 import io.ktor.client.request.bearerAuth
@@ -22,16 +22,13 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import io.ktor.client.request.setBody
-import net.bosowski.KeyboardGPTApp
+import net.bosowski.predictionSettings.PredictionSettingsViewModel
 import net.bosowski.authentication.LoginViewModel
-import net.bosowski.models.PredictionSettingModel
-import net.bosowski.models.StatsModel
-import net.bosowski.stores.FirebasePredictionSettingStore
+import net.bosowski.predictionSettings.PredictionSettingModel
 import net.bosowski.userStats.StatsViewModel
 import net.bosowski.utlis.Constants
-import net.bosowski.utlis.Observer
 
-class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
+class KeyboardService : View.OnClickListener, InputMethodService() {
 
     private var capsOn = false
     private lateinit var mainView: View
@@ -39,6 +36,7 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
 
     private lateinit var statsViewModel: StatsViewModel
     private lateinit var loginViewModel: LoginViewModel
+    private lateinit var predictionSettingsViewModel: PredictionSettingsViewModel
 
     private lateinit var app: KeyboardGPTApp
 
@@ -46,14 +44,19 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
     lateinit var symbolsKeyboard: LinearLayout
     lateinit var spinner: Spinner
 
+    private var observer: Observer<ArrayList<PredictionSettingModel>>? = null
 
     @Override
     override fun onCreateInputView(): View {
         app = application as KeyboardGPTApp
-        mainView = layoutInflater.inflate(R.layout.keyboard_view_primary_english, null)
 
-        statsViewModel = app.getStatsViewModel()
-        loginViewModel = app.getLoginViewModel()
+        mainView = layoutInflater.inflate(R.layout.keyboard_view_primary_english, null)
+        suggestions = mainView.findViewById<LinearLayout>(R.id.suggestions_layout).children
+        spinner = mainView.findViewById(R.id.spinner)
+
+        statsViewModel = app.statsViewModel
+        loginViewModel = app.loginViewModel
+        predictionSettingsViewModel = app.predictionSettingsViewModel
 
         primaryKeyboard = (layoutInflater.inflate(
             R.layout.keyboard_view_primary_english, null
@@ -64,33 +67,21 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
         ) as ViewGroup).findViewById(R.id.keyboard)
         (symbolsKeyboard.parent as ViewGroup).removeView(symbolsKeyboard)
 
-        suggestions = mainView.findViewById<LinearLayout>(R.id.suggestions_layout).children
-
-        FirebasePredictionSettingStore.registerObserver(this)
-
-        spinner = mainView.findViewById(R.id.spinner)
-        onDataChanged()
-
-        return mainView
-    }
-
-    override fun onDataChanged() {
-        var predictionSettings = FirebasePredictionSettingStore.findAll()
-        if (predictionSettings.isEmpty()) {
-            predictionSettings =
-                arrayListOf(PredictionSettingModel(text = "Rephrase the text"))
-            FirebasePredictionSettingStore.create(predictionSettings.first())
+        observer = Observer<ArrayList<PredictionSettingModel>> {
+            spinner.adapter = ArrayAdapter(this,
+                android.R.layout.simple_spinner_item,
+                predictionSettingsViewModel.predictionSettings.value!!.map { it.text })
         }
 
-        spinner.adapter = ArrayAdapter(this,
-            android.R.layout.simple_spinner_item,
-            predictionSettings.map { it.text })
+        predictionSettingsViewModel.predictionSettings.observeForever(observer!!)
+
+        return mainView
     }
 
     /**
      * Called by the caps button.
      */
-    fun toggleCaps(v: View) {
+    private fun toggleCaps(v: View) {
         capsOn = !capsOn
         for (row in mainView.findViewById<LinearLayout>(R.id.keyboard).children) {
             for (button in (row as LinearLayout).children) {
@@ -106,35 +97,35 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
     }
 
     override fun onClick(v: View) {
-        v as TextView
-
         statsViewModel.incrementKeyStrokes(v.tag.toString())
 
-        val keyboardRoot = mainView as ViewGroup
         when (v.tag) {
-            // Called by special keys that can have their tag translated to keyCode, eg. "DEL" or "CAPS_LOCK".
-            in listOf("DEL", "ENTER", "SPACE", "TAB", "ENTER") -> {
-                sendDownUpKeyEvents(KeyEvent.keyCodeFromString(v.tag.toString()))
-            }
-
-            "SYMBOLS" -> {
-                keyboardRoot.removeView(mainView.findViewById(R.id.keyboard))
-                keyboardRoot.addView(symbolsKeyboard)
-            }
-
-            "PRIMARY" -> {
-                keyboardRoot.removeView(mainView.findViewById(R.id.keyboard))
-                keyboardRoot.addView(primaryKeyboard)
-            }
-
-            "CAPS_LOCK" -> {
-                toggleCaps(v)
-            }
-
-            else -> {
-                currentInputConnection.commitText(v.text, 1)
-            }
+            "DEL", "ENTER", "SPACE", "TAB" -> handleSpecialKey(v)
+            "SYMBOLS" -> switchToSymbols(mainView as ViewGroup)
+            "PRIMARY" -> switchToPrimary(mainView as ViewGroup)
+            "CAPS_LOCK" -> toggleCaps(v)
+            "AI_CALL" -> aiCall(v)
+            else -> handleRegularKey(v as TextView)
         }
+    }
+
+    private fun handleSpecialKey(v: View) {
+        sendDownUpKeyEvents(KeyEvent.keyCodeFromString(v.tag.toString()))
+    }
+
+    private fun handleRegularKey(v: TextView) {
+        currentInputConnection.commitText(v.text, 1)
+    }
+
+    private fun switchToSymbols(keyboardRoot: ViewGroup) {
+        keyboardRoot.removeView(mainView.findViewById(R.id.keyboard))
+        keyboardRoot.addView(symbolsKeyboard)
+
+    }
+
+    private fun switchToPrimary(keyboardRoot: ViewGroup) {
+        keyboardRoot.removeView(mainView.findViewById(R.id.keyboard))
+        keyboardRoot.addView(primaryKeyboard)
     }
 
     private suspend fun updateSuggestion() {
@@ -188,7 +179,7 @@ class KeyboardService : View.OnClickListener, InputMethodService(), Observer {
         return allText?.text?.toString() ?: ""
     }
 
-    fun apiCall(view: View) {
+    private fun aiCall(view: View) {
         GlobalScope.launch {
             withContext(Dispatchers.Main) {
                 updateSuggestion()

@@ -1,4 +1,4 @@
-package net.bosowski.stores
+package net.bosowski.userStats
 
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -8,12 +8,12 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import net.bosowski.utlis.AbstractObserverNotifier
 import net.bosowski.models.StatsModel
+import net.bosowski.userStats.StatsStore
 import net.bosowski.userStats.StatsViewModel
 import timber.log.Timber
 
-class FirebaseStatsStore(private val statsViewModel: StatsViewModel) : StatsStore, AbstractObserverNotifier() {
+class FirebaseStatsStore(private val statsViewModel: StatsViewModel) : StatsStore {
 
     private val database: DatabaseReference =
         FirebaseDatabase.getInstance("https://chattergpt-default-rtdb.europe-west1.firebasedatabase.app/").reference

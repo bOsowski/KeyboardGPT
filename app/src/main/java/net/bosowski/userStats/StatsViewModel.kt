@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import net.bosowski.models.StatsModel
-import net.bosowski.stores.FirebaseStatsStore
 
 class StatsViewModel : ViewModel() {
 

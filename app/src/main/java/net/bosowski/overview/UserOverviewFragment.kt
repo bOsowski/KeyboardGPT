@@ -8,17 +8,15 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import net.bosowski.activities.PredictionSettingsListActivity
+import net.bosowski.predictionSettings.PredictionSettingsListActivity
 import net.bosowski.databinding.FragmentUserOverviewBinding
 import android.net.Uri
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import net.bosowski.BuildConfig.SERVER_URL
 import net.bosowski.KeyboardGPTApp
 import net.bosowski.R
 import net.bosowski.authentication.LoginViewModel
-import net.bosowski.stores.FirebaseStatsStore
 import net.bosowski.userStats.StatsViewModel
 
 class UserOverviewFragment : Fragment() {
@@ -33,8 +31,8 @@ class UserOverviewFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         app = requireActivity().application as KeyboardGPTApp
-        statsViewModel = app.getStatsViewModel()
-        loginViewModel = app.getLoginViewModel()
+        statsViewModel = app.statsViewModel
+        loginViewModel = app.loginViewModel
     }
 
     override fun onCreateView(

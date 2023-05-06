@@ -1,4 +1,4 @@
-package net.bosowski.activities
+package net.bosowski
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

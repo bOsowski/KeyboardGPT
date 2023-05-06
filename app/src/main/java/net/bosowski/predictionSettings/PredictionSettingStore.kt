@@ -1,10 +1,11 @@
-package net.bosowski.stores
+package net.bosowski.predictionSettings
 
-import net.bosowski.models.PredictionSettingModel
+import net.bosowski.predictionSettings.PredictionSettingModel
 
 interface PredictionSettingStore {
     fun create(predictionSettingModel: PredictionSettingModel)
     fun update(predictionSettingModel: PredictionSettingModel)
+    fun update(predictionSettingModels: ArrayList<PredictionSettingModel>)
     fun delete(predictionSettingModel: PredictionSettingModel)
     fun deleteAll()
     fun findAll(): List<PredictionSettingModel>

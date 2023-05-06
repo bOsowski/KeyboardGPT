@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
-    tools:context=".keyboard.KeyboardService">
+    tools:context=".KeyboardService">
 
     <LinearLayout
         android:id="@+id/keyboard"

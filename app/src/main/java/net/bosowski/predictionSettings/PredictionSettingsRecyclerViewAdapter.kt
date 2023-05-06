@@ -1,14 +1,10 @@
-package net.bosowski.adapters
+package net.bosowski.predictionSettings
 
-import android.R
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.NonDisposableHandle.parent
 import net.bosowski.databinding.PredictionSettingCardBinding
-import net.bosowski.models.PredictionSettingModel
-import net.bosowski.stores.FirebasePredictionSettingStore
 
 
 class PredictionSettingsRecyclerViewAdapter(var predictionSettings: ArrayList<PredictionSettingModel>) :

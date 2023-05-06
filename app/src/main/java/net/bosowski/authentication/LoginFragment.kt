@@ -40,7 +40,7 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         app = requireActivity().application as KeyboardGPTApp
 
-        loginViewModel = app.getLoginViewModel()
+        loginViewModel = app.loginViewModel
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(BuildConfig.CLIENT_ID)

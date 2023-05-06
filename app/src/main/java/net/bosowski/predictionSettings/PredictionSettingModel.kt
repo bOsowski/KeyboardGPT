@@ -1,4 +1,4 @@
-package net.bosowski.models
+package net.bosowski.predictionSettings
 
 data class PredictionSettingModel(
     var id: String = "",

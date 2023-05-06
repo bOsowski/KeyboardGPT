@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
-    tools:context=".keyboard.KeyboardService">
+    tools:context=".KeyboardService">
 
     <TextView
         android:id="@+id/textContainer"
@@ -31,10 +31,11 @@
 
         <ImageButton
             android:id="@+id/ai_api_call"
+            android:tag="AI_CALL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:onClick="apiCall"
+            android:onClick="onClick"
             android:src="@android:drawable/ic_menu_rotate" />
     </LinearLayout>
 
@@ -374,7 +375,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1.5"
                 android:maxLines="1"
-                android:onClick="toggleCaps"
+                android:onClick="onClick"
                 android:padding="10dp"
                 android:tag="CAPS_LOCK"
                 android:text="⇧"

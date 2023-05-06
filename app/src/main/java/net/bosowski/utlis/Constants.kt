@@ -5,8 +5,8 @@ import com.google.firebase.database.FirebaseDatabase
 import net.bosowski.BuildConfig
 
 object Constants {
-    val CHATTERGPT_SERVER_URL = BuildConfig.SERVER_URL
+    const val CHATTERGPT_SERVER_URL = BuildConfig.SERVER_URL
 
-    private val database: DatabaseReference =
+    val database: DatabaseReference =
         FirebaseDatabase.getInstance("https://chattergpt-default-rtdb.europe-west1.firebasedatabase.app/").reference
 }
