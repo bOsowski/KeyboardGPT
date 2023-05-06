@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "315602245575",
+    "project_id": "chattergpt",
+    "storage_bucket": "chattergpt.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:315602245575:android:b03daf1bcea3f25f60abe2",
+        "android_client_info": {
+          "package_name": "net.bosowski"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "315602245575-h9pcclh08tfvnp7f5ujnu38eooug4ed5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.bosowski",
+            "certificate_hash": "05181c444f803d4f72eb8b32b8b1e90d10a19c72"
+          }
+        },
+        {
+          "client_id": "315602245575-hjri1bjtmka3k8gh59kaqcfoat7eec63.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChFccSL7CuyJcQsb2VzYb1-yZLDnbtwL4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "315602245575-hjri1bjtmka3k8gh59kaqcfoat7eec63.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

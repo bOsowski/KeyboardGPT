@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".KeyboardGPTApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -14,8 +15,11 @@
         android:theme="@style/Theme.KeyboardGPT"
         tools:targetApi="31">
         <activity
-            android:name=".UserOverview"
-            android:exported="false" />
+            android:name=".predictionSettings.PredictionSettingsListActivity"
+            android:exported="true" />
+        <activity
+            android:name=".predictionSettings.PredictionSettingsRecyclerViewAdapter"
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -27,7 +31,7 @@
         </activity>
 
         <service
-            android:name=".keyboard.KeyboardService"
+            android:name=".KeyboardService"
             android:exported="true"
             android:label="KeyboardGPT"
             android:permission="android.permission.BIND_INPUT_METHOD">
