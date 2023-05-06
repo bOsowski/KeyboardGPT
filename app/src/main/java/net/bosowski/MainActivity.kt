@@ -5,8 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import net.bosowski.R
 import net.bosowski.authentication.LoginFragment
 import net.bosowski.databinding.ActivityMainBinding
+import net.bosowski.overview.UserOverviewFragment
 
-class MainActivity: AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -15,10 +16,7 @@ class MainActivity: AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, LoginFragment())
-                .commit()
-        }
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, LoginFragment())
+            .commit()
     }
 }

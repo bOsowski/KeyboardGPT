@@ -49,16 +49,19 @@ class UserOverviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        userOverviewViewModel.availableCredits.observe(viewLifecycleOwner, Observer { credits ->
+        userOverviewViewModel.availableCredits.observe(viewLifecycleOwner) { credits ->
             binding.availableCredits.text = getString(R.string.available_credits, credits)
-        })
+        }
 
-        statsViewModel.statsModel.observe(viewLifecycleOwner, Observer { stats ->
+        statsViewModel.statsModel.observe(viewLifecycleOwner) { stats ->
             binding.keystrokes.text =
-                getString(R.string.total_keystrokes, stats?.buttonClicks?.map { it.value }?.sum() ?: 0)
+                getString(
+                    R.string.total_keystrokes,
+                    stats?.buttonClicks?.map { it.value }?.sum() ?: 0
+                )
             binding.completionClicks.text =
                 getString(R.string.completion_clicks, stats?.completionsUsed ?: 0)
-        })
+        }
 
         binding.buyCredits.setOnClickListener {
             buyCredits()
@@ -67,6 +70,7 @@ class UserOverviewFragment : Fragment() {
         loginViewModel.idToken.observe(viewLifecycleOwner) { token: String ->
             userOverviewViewModel.fetchUserData(token)
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

@@ -100,8 +100,6 @@ class LoginFragment : Fragment() {
                 if (idToken != null) {
                     loginViewModel.setIdToken(idToken)
                 }
-            } else {
-                // Handle failure, e.g., prompt user to sign in again
             }
         }
     }
