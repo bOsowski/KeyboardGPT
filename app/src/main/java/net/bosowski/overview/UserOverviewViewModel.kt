@@ -12,7 +12,6 @@ import io.ktor.client.statement.bodyAsText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import net.bosowski.models.StatsModel
 import net.bosowski.utlis.Constants
 import java.text.DecimalFormat
 

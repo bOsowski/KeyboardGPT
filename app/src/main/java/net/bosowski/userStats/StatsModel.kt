@@ -1,4 +1,4 @@
-package net.bosowski.models
+package net.bosowski.userStats
 
 import java.util.Date
 

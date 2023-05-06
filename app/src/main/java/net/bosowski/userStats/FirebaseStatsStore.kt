@@ -8,9 +8,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import net.bosowski.models.StatsModel
-import net.bosowski.userStats.StatsStore
-import net.bosowski.userStats.StatsViewModel
 import timber.log.Timber
 
 class FirebaseStatsStore(private val statsViewModel: StatsViewModel) : StatsStore {

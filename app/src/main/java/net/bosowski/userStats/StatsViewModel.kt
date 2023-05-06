@@ -3,7 +3,6 @@ package net.bosowski.userStats
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import net.bosowski.models.StatsModel
 
 class StatsViewModel : ViewModel() {
 
