@@ -44,7 +44,7 @@
 
         <TextView
             android:id="@+id/suggestion1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClickSuggestion"
@@ -52,7 +52,7 @@
 
         <TextView
             android:id="@+id/suggestion2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClickSuggestion"
@@ -60,7 +60,7 @@
 
         <TextView
             android:id="@+id/suggestion3"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClickSuggestion"
